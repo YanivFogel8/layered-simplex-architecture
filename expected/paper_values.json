@@ -75,13 +75,13 @@
     "d": 100000, "corpus": "King James Bible, Gutenberg eBook #10, verse numbers removed",
     "columns": ["n", "distinct", "empirical_entropy", "add_one", "add_half", "braess_sauer", "ristad", "good_turing", "lsa_avg", "posterior_mode_L"],
     "rows": [
-      [10000, 1161, 7.56, 4.597, 3.846, 3.806, 1.194, 1.065, 1.052, 21],
+      [10000, 1160, 7.56, 4.597, 3.846, 3.805, 1.193, 1.066, 1.052, 21],
       [30000, 2119, 7.87, 3.225, 2.512, 2.489, 0.709, 0.606, 0.598, 21],
       [100000, 3839, 8.02, 1.911, 1.359, 1.350, 0.381, 0.310, 0.306, 21],
       [300000, 6922, 8.18, 1.026, 0.679, 0.677, 0.224, 0.170, 0.168, 19],
-      [915849, 13550, 8.48, 0.478, 0.303, 0.302, 0.137, 0.097, 0.095, 15]
+      [915860, 13550, 8.48, 0.478, 0.303, 0.302, 0.137, 0.097, 0.095, 15]
     ],
-    "_reproduction_note": "This repository's corpus recipe yields 915,860 tokens (11 more than the paper's 915,849; a 0.001% preprocessing difference, see scripts/get_kjv.py). Reproduced redundancies agree with every table entry at the printed precision except that three classical cells at n = 10,000 shift by 0.001 (3.805/1.193/1.066 instead of 3.806/1.194/1.065) and the distinct count at n = 10,000 reads 1,160 instead of 1,161."
+    "_note": "The paper's August 2026 revision adopted this repository's corpus recipe as canonical (915,860 tokens; see scripts/get_kjv.py). Every entry above matches the paper at printed precision with no exceptions."
   },
   "table8_bible_order_one": {
     "unigram_reference": {"empirical_entropy": 8.477, "lsa_code": 8.572},

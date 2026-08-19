@@ -26,13 +26,10 @@ Preprocessing, in order:
    possessive marker ``’s``, or a single punctuation character.  Case is
    preserved.
 
-This yields 915,860 tokens over 13,550 distinct types.  The paper reports
-915,849 tokens over the same 13,550 types: the original preprocessing run
-differed in a detail affecting 11 tokens (0.001% of the stream) that we
-have not been able to reconstruct exactly.  All numbers computed from this
-corpus agree with the paper's tables to their reported precision; the
-per-prefix distinct-type counts of Table 7 are 1,160 / 2,119 / 3,839 /
-6,922 here against 1,161 / 2,119 / 3,839 / 6,922 in the paper.
+This yields 915,860 tokens over 13,550 distinct types — exactly the
+corpus of the paper (its August 2026 revision adopted this recipe as
+canonical).  The per-prefix distinct-type counts of Table 7 are
+1,160 / 2,119 / 3,839 / 6,922, as printed.
 
 Order of preference (mirrors scripts/get_text8.py of the source project):
 

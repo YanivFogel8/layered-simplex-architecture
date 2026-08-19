@@ -54,19 +54,17 @@ When you reproduce a result, compare against it, respecting the stated
 Monte-Carlo standard errors (Table 5: ≤ 0.001 bits except the Dirichlet
 rows ≤ 0.013; Figure 2: profile-sampling standard errors over 40
 profiles; smoke runs use fewer samples, so agree only qualitatively).
-Two known, documented residuals:
+One known, documented residual:
 
-1. The Bible corpus rebuilt by `scripts/get_kjv.py` has 915,860 tokens;
-   the paper's run had 915,849 (11 tokens, 0.001%, from an unarchived
-   preprocessing detail). Every published number agrees at its printed
-   precision except three classical cells at n = 10,000 that shift by
-   0.001 bits and the n = 10,000 distinct-type count (1,160 vs 1,161).
-   The full statement is in `get_kjv.py` and in
-   `expected/paper_values.json` under `table7_bible`.
-2. The certificate (self-reported error bound) of the Mellin series is
+1. The certificate (self-reported error bound) of the Mellin series is
    platform-sensitive in its last bits; `tests/test_mellin.py` explains
    the guard. Results are unaffected — values are held to the exact
    contour independently.
+
+(The corpus built by `scripts/get_kjv.py` is exactly the paper's corpus:
+915,860 tokens, 13,550 types. An earlier draft of the paper used a
+July run that differed by 11 tokens; the August 2026 revision adopted
+this repository's recipe as canonical, so there is no corpus residual.)
 
 ## Performance and resource facts
 

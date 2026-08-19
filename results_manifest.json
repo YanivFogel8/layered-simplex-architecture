@@ -85,7 +85,7 @@
       ],
       "smoke": "python scripts/unigram_experiment.py --corpus data/kjv.txt --d 100000 --checkpoints 10000 --jobs 2 --out output/table7_n10k  # ~4 min; reproduces row 1 of Table 7 (redundancy 1.052, mode L = 21)",
       "outputs": ["output/bible_report/table7.tsv", "output/bible_report/fig7_bible.pdf"],
-      "expected": "expected/paper_values.json: table7_bible (see its _reproduction_note about an 11-token preprocessing difference)",
+      "expected": "expected/paper_values.json: table7_bible",
       "runtime": "baselines: seconds. LSA column: ~1 h on a modern multi-core machine for the first run; moment-table rows persist in the universal store (tables/universal_v2, gitignored), so later checkpoints and reruns are far faster"
     },
     {

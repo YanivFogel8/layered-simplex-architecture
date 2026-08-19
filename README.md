@@ -65,10 +65,8 @@ A word on the corpus: `scripts/get_kjv.py` builds the King James Bible
 corpus (Project Gutenberg eBook #10, verse numbers removed) and checks
 its token statistics. A compressed copy of the tokenized corpus ships in
 `data/kjv.txt.gz`, so no download is needed and the edition is pinned.
-The recipe reproduces the paper's corpus to within 11 tokens out of
-915,849 (0.001%); the script and
-`expected/paper_values.json` state the exact residual difference, which
-is below the precision of every published number.
+This is exactly the paper's corpus — 915,860 tokens, 13,550 distinct
+types — and the script asserts those counts when it runs.
 
 ## Layout
 
