@@ -1,0 +1,136 @@
+{
+  "paper": {
+    "title": "A Layered Simplex Architecture for Large Alphabets",
+    "authors": ["Meir Feder", "Yaniv Fogel", "Ruediger Urbanke"],
+    "arxiv": "TODO-ARXIV",
+    "repository": "https://github.com/urbanke/layered-simplex-architecture"
+  },
+  "conventions": {
+    "units": "bits everywhere (regret, KL, codelength per token)",
+    "seeds": "every experiment takes --seed and defaults to the fixed seed of the published run; identical seeds reproduce identical Monte-Carlo draws",
+    "procedure": "all probabilities come from explicit formulas evaluated on count profiles (paper, Section 3.1); the only statistical error is the average over sampled profiles or trials",
+    "expected_values": "expected/paper_values.json holds the paper's numbers for comparison",
+    "smoke_runs": "every entry below lists a smoke variant that exercises the full code path in minutes at reduced scale",
+    "table_store": "moment-table rows persist in the certified universal store at tables/universal_v2 (override with LSA_UNIVERSAL_TABLES); first use builds a row, every later experiment reuses it"
+  },
+  "results": [
+    {
+      "id": "fig1",
+      "paper_item": "Figure 1",
+      "description": "One draw of the LSA prior at d = 24, L = 4",
+      "commands": ["python scripts/fig1_prior_draws.py --d 24 --l 4 --out output/fig1"],
+      "outputs": ["output/fig1/fig1_prior_draw.pdf"],
+      "runtime": "seconds"
+    },
+    {
+      "id": "fig2_table1",
+      "paper_item": "Figure 2, Table 1",
+      "description": "Online regret of every depth and of the depth average, vs Zipf exponent, at three alphabet sizes",
+      "commands": [
+        "python scripts/depth_tilt_experiment.py --d 1000 --n 316 --l-max 69 --out output/fig2_d1e3 --jobs 8",
+        "python scripts/depth_tilt_experiment.py --d 10000 --n 1000 --l-max 92 --out output/fig2_d1e4 --jobs 8",
+        "python scripts/depth_tilt_experiment.py --d 1000000 --n 1000 --l-max 138 --out output/fig2_d1e6 --jobs 8",
+        "python scripts/depth_tilt_report.py --results output/fig2_d1e3/results.json output/fig2_d1e4/results.json output/fig2_d1e6/results.json --out output/fig2_report"
+      ],
+      "smoke": "python scripts/depth_tilt_experiment.py --d 1000 --n 316 --l-max 69 --alphas 0,1.5,3.0 --profiles 8 --out output/fig2_smoke --jobs 2  # ~3 min; best depths already match Table 1",
+      "outputs": ["output/fig2_report/fig2_depth_tilt.pdf", "output/fig2_report/table1.tsv"],
+      "expected": "expected/paper_values.json: table1_best_depth, figure2_average_gap",
+      "runtime": "d=10^3 panel ~1 h on 8 cores; d=10^6 panel is the expensive one (several hours)"
+    },
+    {
+      "id": "fig3_fig4_table2_table3",
+      "paper_item": "Figures 3-4, Tables 2-3",
+      "description": "Symbol discovery and the alphabet/data scaling tests on the Section 4.1 factorial grid at c = c*",
+      "commands": [
+        "python scripts/factorial_scaling_experiment.py --d-values 1000,3162,10000,31623,100000 --N-values 100,316,1000,3162,10000 --alphas 1.5,2,3,4 --c-value cstar --profile-samples 5000 --workers 8 --out-csv output/factorial/factorial_results.csv",
+        "python scripts/scaling_report.py --results output/factorial/factorial_results.csv --out output/scaling"
+      ],
+      "smoke": "python scripts/factorial_scaling_experiment.py --d-values 1000,3162 --N-values 100,316,1000 --alphas 2,3 --profile-samples 60 --workers 2 --out-csv output/factorial_smoke/factorial_results.csv && python scripts/scaling_report.py --results output/factorial_smoke/factorial_results.csv --out output/scaling_smoke --discovery-draws 300 --description-draws 200  # ~7 min",
+      "outputs": ["output/scaling/fig3_discovery.pdf", "output/scaling/fig4_data_scaling.pdf", "output/scaling/table2.tsv", "output/scaling/table3.tsv"],
+      "expected": "expected/paper_values.json: table2_alphabet_scaling, table3_data_scaling_exponents",
+      "runtime": "hours (25 grid cells x 4 alphas x 5000 profiles); scales down with --profile-samples"
+    },
+    {
+      "id": "fig5_table4",
+      "paper_item": "Figure 5, Table 4",
+      "description": "Regret per discovered symbol vs depth coefficient c, with the price prediction rho(c) of Equation (14)",
+      "commands": ["python scripts/depth_scaling_experiment.py --d 100000 --n 1000 --alphas 2,3,4 --out output/fig5 --jobs 8"],
+      "smoke": "python scripts/depth_scaling_experiment.py --d 2000 --n 200 --alphas 2,3 --c-values 0.5,1,1.5,2,2.37,3,4 --profiles 6 --description-draws 100 --out output/fig5_smoke --jobs 2  # ~1 min",
+      "outputs": ["output/fig5/fig5_depth_scaling.pdf", "output/fig5/table4.tsv", "output/fig5/results.json"],
+      "expected": "expected/paper_values.json: table4_depth_scaling",
+      "runtime": "~1-2 h on 8 cores"
+    },
+    {
+      "id": "fig6_table5_table6",
+      "paper_item": "Figure 6, Tables 5-6",
+      "description": "Competitive comparison on the Orlitsky-Suresh benchmark, eleven targets at d = 10^4, twenty trials with common samples",
+      "commands": [
+        "python scripts/benchmark_experiment.py --out output/benchmark --jobs 8",
+        "python scripts/benchmark_report.py --results output/benchmark/results.json --out output/benchmark"
+      ],
+      "smoke": "python scripts/benchmark_experiment.py --out output/benchmark_smoke --d 300 --n-values 100,300,1000 --trials 3 --l-max 40 --targets uniform,zipf_1.5,zipf_5,dirichlet_half && python scripts/benchmark_report.py --results output/benchmark_smoke/results.json  # ~2 min",
+      "outputs": ["output/benchmark/fig6_benchmark.pdf", "output/benchmark/table5.tsv", "output/benchmark/table6.tsv"],
+      "expected": "expected/paper_values.json: table5_benchmark_at_n_20000, table6_posterior_over_depths",
+      "runtime": "hours (11 targets x 8 sample sizes x 20 trials, every depth to 80 evaluated exactly)"
+    },
+    {
+      "id": "table7_fig7",
+      "paper_item": "Table 7, Figure 7",
+      "description": "Compressing the King James Bible over the fixed d = 100,000 vocabulary: the depth-averaged LSA predictor against the classical sequential coders",
+      "commands": [
+        "python scripts/get_kjv.py",
+        "python scripts/unigram_experiment.py --corpus data/kjv.txt --d 100000 --checkpoints 10000,30000,100000,300000,all --jobs 8 --out output/table7_bible",
+        "python scripts/bible_baselines_experiment.py --corpus data/kjv.txt --d 100000 --checkpoints 10000,30000,100000,300000,all --out output/bible_baselines",
+        "python scripts/bible_report.py --unigram output/table7_bible/results.json --baselines output/bible_baselines/results.json --out output/bible_report"
+      ],
+      "smoke": "python scripts/unigram_experiment.py --corpus data/kjv.txt --d 100000 --checkpoints 10000 --jobs 2 --out output/table7_n10k  # ~4 min; reproduces row 1 of Table 7 (redundancy 1.052, mode L = 21)",
+      "outputs": ["output/bible_report/table7.tsv", "output/bible_report/fig7_bible.pdf"],
+      "expected": "expected/paper_values.json: table7_bible (see its _reproduction_note about an 11-token preprocessing difference)",
+      "runtime": "baselines: seconds. LSA column: ~1 h on a modern multi-core machine for the first run; moment-table rows persist in the universal store (tables/universal_v2, gitignored), so later checkpoints and reruns are far faster"
+    },
+    {
+      "id": "table8",
+      "paper_item": "Table 8 (LSA rows) and Section 5.4 in-text numbers",
+      "description": "Order-one models of the Bible: per-state depth-averaged predictors over the M most frequent contexts plus backoff, averaged over the split-count grid",
+      "commands": [
+        "python scripts/state_family_experiment.py --corpus data/kjv.txt --d 100000 --m-grid 0,64,128,256 --l-max 40 --jobs 8 --out output/table8_m256",
+        "python scripts/state_family_experiment.py --corpus data/kjv.txt --d 100000 --m-grid 0,64,128,256,512 --l-max 60 --jobs 8 --out output/table8_m512"
+      ],
+      "smoke": "python scripts/state_family_experiment.py --corpus data/kjv.txt --n 20000 --d 100000 --m-grid 0,4,16 --l-max 20 --jobs 2 --out output/table8_smoke  # ~1 min",
+      "outputs": ["output/table8_m256/results.json", "output/table8_m512/results.json"],
+      "expected": "expected/paper_values.json: table8_bible_order_one",
+      "runtime": "heavy (hundreds of per-state profiles at d = 10^5); run on a multi-core machine"
+    },
+    {
+      "id": "appendix_c",
+      "paper_item": "Appendix C (validation) and Appendices A-B (numerics)",
+      "description": "The implementation checks that must pass before any experiment, plus the full test suite",
+      "commands": [
+        "python scripts/validate_appendix_c.py",
+        "python -m pytest -q"
+      ],
+      "smoke": "python scripts/validate_appendix_c.py --quick  # ~1 min",
+      "outputs": ["console pass/fail table"],
+      "expected": "expected/paper_values.json: appendix_c_tolerances",
+      "runtime": "validation ~15 min at full scale; test suite ~10 min"
+    }
+  ],
+  "not_included": [
+    {
+      "paper_item": "Section 5.3 in-text byte-pair check",
+      "detail": "the run with a byte-pair vocabulary trained on the corpus itself (posterior collapses to L = 1); the BPE trainer was not part of the archived pipeline"
+    },
+    {
+      "paper_item": "Section 5.4 in-text online context-learning code (7.206 bits/token)",
+      "detail": "the fully sequential variant in which a context is promoted once its count crosses a threshold; only the semi-adaptive accounting is scripted here"
+    }
+  ],
+  "advanced_tools": [
+    {"script": "scripts/build_anchor_store.py", "purpose": "designed anchor stores for the heavy-count moment rows (Appendix B.2) -- an accelerator for very large runs; the default fast-table cache is sufficient for every result above"},
+    {"script": "scripts/saddle_accuracy.py", "purpose": "accuracy audit of the saddle evaluation against the Mellin-Barnes contour (Appendix B.3)"},
+    {"script": "scripts/ladder_accuracy.py", "purpose": "accuracy audit of the polynomial ladder rows against the contour (Appendix B.3)"},
+    {"script": "scripts/prune_tables.py", "purpose": "delete or compact moment-table caches after large runs"},
+    {"script": "scripts/exact_online_regret.py", "purpose": "small-alphabet exact regret by full enumeration (development cross-check)"},
+    {"script": "scripts/validate_saddlepoint_a_lambda.py", "purpose": "audit of the saddlepoint A_lambda approximation against exact enumeration (Appendix A)"}
+  ]
+}
