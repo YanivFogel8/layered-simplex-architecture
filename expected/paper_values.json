@@ -87,7 +87,8 @@
     "unigram_reference": {"empirical_entropy": 8.477, "lsa_code": 8.572},
     "M_256_Lmax_40": {"coverage_of_transitions": 0.766, "empirical_H_next_given_state": 6.315, "lsa_per_state_depth_avg": 7.132, "good_turing_per_state": 7.143, "ristad_per_state": 7.254, "kt_per_state": 9.781, "add_one_per_state": 10.445},
     "M_512_Lmax_60": {"coverage_of_transitions": 0.837, "empirical_H_next_given_state": 6.098, "lsa_per_state_depth_avg": 7.100, "good_turing_per_state": 7.113, "ristad_per_state": 7.227, "kt_per_state": 10.172, "add_one_per_state": 10.868},
-    "in_text": {"context_set_header_bits": 4600, "semi_adaptive_total": 7.105, "split_512": 7.10, "split_2048": 7.23, "split_all_13550": 7.53, "online_threshold_code": 7.206}
+    "in_text": {"context_set_header_bits": 4600, "semi_adaptive_total": 7.105, "split_512": 7.10, "split_2048": 7.23, "split_all_13550": 7.53, "online_threshold_code": 7.204},
+    "_online_note": "The paper's August 2026 revision prints 7.204 (measured 7.2042; an earlier draft printed 7.206 from an unarchived run). The value is robust to the threshold grid, the depth ceiling (L <= 40 vs 60), and the promotion boundary; see the online_states entry of results_manifest.json."
   },
   "appendix_c_tolerances": {
     "layer_recursion_L2_vs_quadrature": 2e-6,
@@ -96,5 +97,23 @@
     "exchangeability_d_1e6_nats": 2e-3,
     "predictive_normalization_L5": 1e-5,
     "predictive_normalization_L22": 4e-4
+  },
+  "bible_bpe_check": {
+    "claim": "Trained on the corpus itself, a byte-pair vocabulary flattens the stream: the posterior collapses onto the shallowest depths (against L = 15 on the word stream) and all reasonable methods essentially tie.",
+    "per_vocab_full_stream": {
+      "1024": {"stream_length": 1266177, "lsa_avg": 8.4616, "add_one": 8.4618, "add_half": 8.4618, "good_turing": 8.4623, "ristad": 8.4618, "posterior_mode_depth": 2, "posterior_mode_weight": 1.0},
+      "4096": {"stream_length": 1002269, "lsa_avg": 8.7365, "add_one": 8.7399, "add_half": 8.7381, "good_turing": 8.7375, "ristad": 8.7399, "posterior_mode_depth": 2, "posterior_mode_weight": 1.0},
+      "16384": {"stream_length": 920433, "lsa_avg": 8.559, "add_one": 8.588, "add_half": 8.572, "good_turing": 8.553, "ristad": 8.588, "posterior_mode_depth": 3, "posterior_mode_weight": 1.0}
+    },
+    "_note": "Values are bits per subword token of each BPE stream (not comparable across vocabulary sizes, nor to the word-stream numbers of Table 7). The paper states this check qualitatively and does not pin the vocabulary size."
+  },
+  "online_context_code": {
+    "online_bits_per_token": 7.204,
+    "measured": 7.2042,
+    "threshold_grid": [16, 32, 64, 128, 256, 512],
+    "per_threshold_bits_per_token": {"16": 7.2665, "32": 7.2251, "64": 7.2042, "128": 7.2222, "256": 7.2734, "512": 7.3593},
+    "promoted_states_final": {"16": 2832, "32": 1804, "64": 1060, "128": 639, "256": 363, "512": 199},
+    "gap_above_semi_adaptive": 0.10,
+    "_note": "The mixture rides its best member (theta = 64). Convention variants measured: depth ceiling L <= 40 gives 7.2044; thresholds shifted by one (promotion strictly above the threshold) gives 7.2042. Paper sentence: 7.204 bits per token, 0.10 above the semi-adaptive 7.100."
   }
 }

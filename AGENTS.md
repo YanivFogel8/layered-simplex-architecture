@@ -22,9 +22,8 @@ profiles or trials, always with fixed seeds.
 `results_manifest.json` — machine-readable. For every figure and table
 of the paper it lists: the exact command(s), a smoke variant (same code
 path, minutes instead of hours), the output files, the expected values
-(in `expected/paper_values.json`), and the runtime. Two in-text remarks
-of the paper are listed under `not_included`, with reasons — do not go
-looking for their scripts.
+(in `expected/paper_values.json`), and the runtime. Every computation
+in the paper is scripted; the `not_included` list is empty.
 
 ## How to run things
 

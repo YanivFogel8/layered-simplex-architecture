@@ -23,7 +23,7 @@ for a in "$@"; do
   case "$a" in
     --smoke) MODE="smoke" ;;
     --dry-run) MODE="dry" ;;
-    validate|fig1|corpus|table7|table8|fig2|fig5|benchmark|scaling|all) WHICH="$a" ;;
+    validate|fig1|corpus|table7|table8|bible_checks|fig2|fig5|benchmark|scaling|all) WHICH="$a" ;;
     *) echo "unknown argument: $a"; exit 2 ;;
   esac
 done
@@ -65,7 +65,7 @@ fi
 if want fig1; then
   run fig1 "$PY" scripts/fig1_prior_draws.py --d 24 --l 4 --out output/fig1
 fi
-if want corpus || want table7 || want table8; then
+if want corpus || want table7 || want table8 || want bible_checks; then
   run corpus "$PY" scripts/get_kjv.py
 fi
 
@@ -100,6 +100,28 @@ if want table8; then
     run table8_m512 "$PY" scripts/state_family_experiment.py \
       --corpus data/kjv.txt --d 100000 --m-grid 0,64,128,256,512 \
       --l-max 60 --jobs "$JOBS" --out output/table8_m512
+  fi
+fi
+
+# --- the two in-text Bible checks (Sections 5.3 and 5.4) -----------------
+if want bible_checks; then
+  if [ "$MODE" = "smoke" ]; then
+    run bpe_check "$PY" scripts/bible_bpe_check.py --corpus data/kjv.txt \
+      --vocab-size 512 --checkpoints 20000,60000 --jobs "$JOBS" \
+      --out output/bpe_check_smoke
+    run online_states "$PY" scripts/bible_online_states_experiment.py \
+      --corpus data/kjv.txt --d 100000 --n 20000 --thresholds 8,32 \
+      --l-max 20 --jobs "$JOBS" --out output/online_states_smoke
+  else
+    for V in 1024 4096 16384; do
+      run "bpe_v$V" "$PY" scripts/bible_bpe_check.py --corpus data/kjv.txt \
+        --vocab-size "$V" --checkpoints 10000,100000,all --jobs "$JOBS" \
+        --out "output/bpe_check_v$V"
+    done
+    run online_states "$PY" scripts/bible_online_states_experiment.py \
+      --corpus data/kjv.txt --d 100000 --l-max 60 \
+      --thresholds 16,32,64,128,256,512 --jobs "$JOBS" \
+      --out output/online_states
   fi
 fi
 

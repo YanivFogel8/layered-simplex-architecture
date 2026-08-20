@@ -54,6 +54,8 @@ the defaults, so runs are repeatable draw for draw.
 | Figure 6, Tables 5–6 (competitive benchmark) | `benchmark_experiment.py`, then `benchmark_report.py` | hours |
 | Table 7, Figure 7 (the Bible) | `get_kjv.py`, `unigram_experiment.py`, `bible_baselines_experiment.py`, `bible_report.py` | ~1 h |
 | Table 8 (order-one Bible models) | `state_family_experiment.py` (two runs) | heavy |
+| §5.3 byte-pair check (in text) | `bible_bpe_check.py` (three vocabulary sizes) | minutes each |
+| §5.4 online context code (in text) | `bible_online_states_experiment.py` | ~1 h |
 | Appendix C (validation) | `validate_appendix_c.py` and `pytest` | ~25 min |
 
 Exact command lines with all arguments are in `results_manifest.json`;
