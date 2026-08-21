@@ -2,7 +2,7 @@
 
 **Paper:** *A Layered Simplex Architecture for Large Alphabets*,
 Meir Feder, Yaniv Fogel, Ruediger Urbanke.
-arXiv: **TODO-ARXIV** (link to come).
+arXiv: [2608.19908](https://arxiv.org/abs/2608.19908).
 
 This repository contains everything needed to reproduce the numerical
 results of the paper: the exact evaluation machinery for the layered

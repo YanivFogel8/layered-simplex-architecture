@@ -2,7 +2,7 @@
   "paper": {
     "title": "A Layered Simplex Architecture for Large Alphabets",
     "authors": ["Meir Feder", "Yaniv Fogel", "Ruediger Urbanke"],
-    "arxiv": "TODO-ARXIV",
+    "arxiv": "2608.19908",
     "repository": "https://github.com/urbanke/layered-simplex-architecture"
   },
   "conventions": {

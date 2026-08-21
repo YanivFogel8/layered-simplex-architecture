@@ -8,7 +8,8 @@ more briefly.
 
 The complete reproduction package for the paper *"A Layered Simplex
 Architecture for Large Alphabets"* (Feder, Fogel, Urbanke; arXiv:
-TODO-ARXIV). The LSA prior draws L independent uniform points on the
+2608.19908, https://arxiv.org/abs/2608.19908). The LSA prior draws L
+independent uniform points on the
 d-simplex, multiplies them coordinatewise, and renormalizes; the paper
 studies the Bayesian mixture this prior induces: its exact regret, its
 scaling laws, and how it compares with Good–Turing-type estimators on

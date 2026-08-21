@@ -21,7 +21,9 @@ preferred-citation:
     - family-names: Urbanke
       given-names: Ruediger
   year: 2026
-  # TODO-ARXIV: replace with the arXiv identifier once the preprint is up,
-  # e.g.  identifiers:
-  #         - type: other
-  #           value: "arXiv:XXXX.XXXXX"
+  url: "https://arxiv.org/abs/2608.19908"
+  identifiers:
+    - type: other
+      value: "arXiv:2608.19908"
+    - type: doi
+      value: "10.48550/arXiv.2608.19908"
