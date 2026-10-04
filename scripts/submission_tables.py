@@ -32,6 +32,7 @@ def main():
         target = out/'table1'
         options = ['--d', 10000, '--n-values', 1000, '--l-max', 80,
                    '--include-zero', '--extra-baselines', '--jobs', args.jobs,
+                   '--transient-cache', '--checkpoint',
                    '--out', target]
         if args.smoke:
             options += ['--trials', 1, '--targets', 'uniform,zipf_2']

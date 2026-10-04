@@ -131,6 +131,16 @@ including `table1.tsv` / `table2.tsv`, JSON results, and the existing report
 figures. Smoke mode uses one trial/two targets for Table 1 and only the first
 Bible checkpoint for Table 2; its numbers are not full-run results.
 
+The Table 1 driver enables `--transient-cache --checkpoint`. Depth 80 exceeds
+the universal table store's depth ceiling, so the original engine falls back
+to profile-dependent recursion tables. Keeping every profile's cache can use
+tens of GB. The revised driver removes each sample's temporary tables after
+evaluation and atomically saves its losses and posterior in `table1/cells/`.
+Rerunning the same command resumes completed cells with the same random draws;
+changed experiment settings are rejected for an existing checkpoint directory.
+Final `results.json` is written only after every cell completes. This changes
+storage and restart behavior, not the estimator or numerical resolution.
+
 `L=0` is the fixed uniform distribution, with sequence evidence `d**(-n)`
 and predictive probability `1/d`. Its prior weight equals that of each other
 depth. The posterior weights are evidence-weighted, not equal at prediction
