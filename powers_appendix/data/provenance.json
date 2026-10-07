@@ -1,0 +1,29 @@
+{
+  "input_archive_sha256": "ca4c2666bcad95554a1b3182eacf23ca763f686c5fbb45ea51ae7bea6539246c",
+  "main_table1_sha256": "e0427a23764c40c4979db30ad4a7656fd57ca1ee77145419c134df93540e498c",
+  "token_ids_sha256": "1242086d268d4807a4e559126c76b72ebd915ca0b7dbd412b7eeda1ffb07c6dc",
+  "canonical_text_sha256": "27c79dc3ad00db78e55a09f9d0140470e42ce11bd41099a2972712fbe2e48196",
+  "tokens": 915860,
+  "types": 13550,
+  "synthetic_depths": [
+    0,
+    80
+  ],
+  "bible_depths": [
+    0,
+    54
+  ],
+  "note": "Frozen main-paper inputs and reference results, not newly computed powers results. Bible IDs preserve first-appearance order of whitespace tokens in the prepared corpus.",
+  "assets": {
+    "main_table1_trials.npz": {
+      "url": "https://github.com/YanivFogel8/layered-simplex-architecture/releases/download/powers-main-inputs-v1/main_table1_trials.npz",
+      "sha256": "e0427a23764c40c4979db30ad4a7656fd57ca1ee77145419c134df93540e498c",
+      "bytes": 1105204
+    },
+    "main_bible_tokens.npz": {
+      "url": "https://github.com/YanivFogel8/layered-simplex-architecture/releases/download/powers-main-inputs-v1/main_bible_tokens.npz",
+      "sha256": "ae086d1dfa5f9df95ad9d53168386271a74cdb055bb79bd10059e625d0b08aaa",
+      "bytes": 1092886
+    }
+  }
+}

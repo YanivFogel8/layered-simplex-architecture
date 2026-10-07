@@ -81,6 +81,18 @@ paper values are preserved at
 and results refer to the longer arXiv version. They remain available for historical
 comparison while ALT run records are produced from new executions.
 
+## Powers appendix: updated main-paper protocol
+
+The [powers appendix workflow](powers_appendix/README.md) uses the saved
+main-paper synthetic trials and canonical Bible token stream, with the
+uniform component included in every mixture. It includes provenance checks,
+raw-result retention and separate LaTeX table rendering. Full powered-model
+runs on these aligned inputs are still pending; historical powers values
+must not be treated as regenerated results. This workflow has its own
+protocol tests and remains separate from the ALT campaign and its unresolved
+protocol decisions. Pinned bulk inputs are archived as release assets in the
+fork, with checksums and a download helper.
+
 ## License and citation
 
 Code is under the [MIT license](LICENSE). [CITATION.cff](CITATION.cff) contains
