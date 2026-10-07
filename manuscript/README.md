@@ -4,6 +4,29 @@ Overleaf is the authoritative manuscript editor. This repository records
 manual source snapshots at agreed milestones: the text freeze, the revision
 after new experiments, and submission. There is no automatic Overleaf sync.
 
+## ALT starting point: 7 October 2026
+
+[`snapshots/2026-10-07-alt-start/`](snapshots/2026-10-07-alt-start/) contains
+the revised shorter manuscript in the official anonymous ALT 2027 format.
+The conversion preserves its scientific text and mathematics, bibliography,
+and figure contents. It applies the ALT title and theorem conventions, renames
+the AI statement to AI Disclosure, and removes the AISTATS checklist.
+
+The main document is `main_shorter.tex`. The bibliography and figures have
+separate names so the older arXiv source can remain in the same Overleaf project.
+The official template's three class/support files are included. The build has
+12 pages through the conclusion and 31 pages including disclosure, references,
+and appendices. Existing experimental results are preserved in this starting
+point; the planned reruns follow the authors' agreement on the text and protocol.
+
+```sh
+cd manuscript/snapshots/2026-10-07-alt-start
+latexmk -pdf -interaction=nonstopmode -halt-on-error -outdir=build main_shorter.tex
+```
+
+`snapshot.json` records the template source, source-file checksums, and build
+checks. This is a starting-point snapshot, preceding the authors' text freeze.
+
 ## ArXiv baseline: 7 October 2026
 
 [`snapshots/2026-10-07-arxiv/`](snapshots/2026-10-07-arxiv/) preserves the
