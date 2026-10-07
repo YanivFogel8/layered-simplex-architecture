@@ -4,6 +4,10 @@
 Meir Feder, Yaniv Fogel, Ruediger Urbanke.
 arXiv: [2608.19908](https://arxiv.org/abs/2608.19908).
 
+Manuscript source snapshots are archived in [`manuscript/`](manuscript/).
+Editing continues in Overleaf; snapshots are copied here manually at agreed
+milestones, alongside the code and experiment records.
+
 This repository contains everything needed to reproduce the numerical
 results of the paper: the exact evaluation machinery for the layered
 simplex architecture (LSA) prior, the classical estimators it is compared
