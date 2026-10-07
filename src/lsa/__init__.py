@@ -1,8 +1,8 @@
 """Layered simplex architecture (LSA): code for the paper.
 
 Paper: "A Layered Simplex Architecture for Large Alphabets"
-(Feder, Fogel, Urbanke).  See README.md for the map from every figure
-and table of the paper to the script that reproduces it.
+(Feder, Fogel, Urbanke). See experiments/alt2027/ for the current
+experiment inventory and README.md for the historical arXiv baseline.
 
 The package has two numerical cores that check each other:
 
@@ -15,7 +15,8 @@ The package has two numerical cores that check each other:
   designed anchor stores).  Validated against the reference; used by all
   corpus experiments.
 
-Everything is measured in bits.
+Reported losses and codelengths use bits. Low-level log evidence and
+log-kernel functions use natural logarithms; check each API's units.
 """
 
 # Prior sampling (Section 3, Figure 1)

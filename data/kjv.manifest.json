@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "dataset_id": "kjv-word-punctuation-v1",
+  "source": "Project Gutenberg eBook #10",
+  "preprocessing_script": "scripts/get_kjv.py",
+  "compressed_file": "data/kjv.txt.gz",
+  "compressed_bytes": 1210591,
+  "compressed_sha256": "fd85379725daaf392891c5de3b54886438854279987cf3e77ab624a604d10977",
+  "decompressed_sha256": "27c79dc3ad00db78e55a09f9d0140470e42ce11bd41099a2972712fbe2e48196",
+  "decompressed_bytes": 4270749,
+  "encoding": "UTF-8",
+  "token_separator": "whitespace",
+  "case": "preserved",
+  "tokens": 915860,
+  "distinct_types": 13550,
+  "prefix_distinct_types": {
+    "10000": 1160,
+    "30000": 2119,
+    "100000": 3839,
+    "300000": 6922
+  },
+  "verified_on": "2026-10-07"
+}

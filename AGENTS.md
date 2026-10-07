@@ -1,111 +1,73 @@
-# Guide for agents and automated tools
+# Working on the ALT revision
 
-This file tells an LLM (or any automated agent) how to work with this
-repository. Humans are welcome too; the README covers the same ground
-more briefly.
+Read `README.md`, `experiments/alt2027/README.md`, and the ALT inventory before
+changing experiment code. The current scientific source is the `alt.tex`
+snapshot referenced in `manuscript/README.md`; Overleaf is the authoring source.
+Manuscript snapshots are copied manually at milestones.
 
-## What this repository is
+## Scope and state
 
-The complete reproduction package for the paper *"A Layered Simplex
-Architecture for Large Alphabets"* (Feder, Fogel, Urbanke; arXiv:
-2608.19908, https://arxiv.org/abs/2608.19908). The LSA prior draws L
-independent uniform points on the
-d-simplex, multiplies them coordinatewise, and renormalizes; the paper
-studies the Bayesian mixture this prior induces: its exact regret, its
-scaling laws, and how it compares with Good–Turing-type estimators on
-synthetic targets and on real text. Everything here evaluates explicit
-formulas on count profiles — nothing is trained, and the only
-statistical error anywhere is a Monte-Carlo average over sampled count
-profiles or trials, always with fixed seeds.
+This repository is being prepared for a fresh rerun of the experiments retained
+in the shorter ALT paper. Historical implementations are starting points.
+`experiments/alt2027/inventory.json` distinguishes manuscript settings, candidate
+implementations, missing work, and unresolved protocol choices. Preserve that
+distinction when updating status or reporting progress.
 
-## The one map you need
+The historical arXiv code and reproduction protocol are preserved at tag
+`arxiv-code-2026-08`. Old paper numbers are historical comparisons. Production
+acceptance comes from analytic identities, independent numerical checks, and the
+agreed accuracy and sampling criteria.
 
-`results_manifest.json` — machine-readable. For every figure and table
-of the paper it lists: the exact command(s), a smoke variant (same code
-path, minutes instead of hours), the output files, the expected values
-(in `expected/paper_values.json`), and the runtime. Every computation
-in the paper is scripted; the `not_included` list is empty.
+## Scientific workflow
 
-## How to run things
+1. Agree on the manuscript scope and fill the outstanding protocol decisions.
+2. Implement and independently validate every method in that protocol.
+3. Freeze the protocol, code, environment, dataset, and numerical-store identity.
+4. Use saved common samples for paired comparisons. Keep per-trial losses and
+   relevant posterior weights, together with the seed scheme.
+5. Generate figures and tables from those records; integrate them in Overleaf.
+6. Archive source and artifact manifests at the agreed milestones.
 
-```bash
-python3 -m venv .venv && source .venv/bin/activate
-python -m pip install -e ".[dev]"
-python scripts/validate_appendix_c.py --quick   # must pass before anything else
-```
+New trials, sample-size changes, model grids, or preprocessing changes belong in
+an explicit protocol revision. Keep smoke, validation, and production outputs in
+separate run directories. A failed numerical check stops the affected campaign.
+Do not overwrite completed run records.
 
-Then take commands from `results_manifest.json`. Conventions:
+## Numerical code
 
-- Run scripts from the repository root. Scripts import siblings from
-  `scripts/` and the installed `lsa` package.
-- Everything is measured in bits.
-- Every experiment accepts `--out` (results land there as
-  `results.json` plus figures/`.tsv` tables) and most accept `--jobs`
-  (parallel table building; set it to the machine's cores).
-- Reports are separate scripts that consume `results.json` files, so
-  you can re-render figures without re-running experiments.
-- Fixed seeds are defaults. Rerunning a command reproduces the same
-  draws exactly.
+- Preserve the independent reference implementation (`mixture_weights.py`) and
+  the table-based implementation (`layered.py`, `fast_tables.py`, `mellin.py`,
+  `universal_tables.py`). Their coexistence supports cross-checks.
+- Read `docs/numerics.md` before reusing the `product_model_with_memory` engine.
+  Explicitly implement the paper's depth-zero atom and declared depth grids;
+  check units, mixture weights, kernel family, and truncation settings.
+- Keep existing APIs and regression tests working. Several scripts import
+  helpers from other scripts; check references before moving or deleting them.
+- After numerical changes, run the full `scripts/validate_appendix_c.py` and
+  `python -m pytest -q`, plus the new checks for the affected ALT domain, before
+  accepting experimental outputs. Documentation-only changes need structural
+  checks rather than numerical campaigns.
+- Record evaluation errors in their actual units. Separate deterministic
+  numerical tolerances from sampling uncertainty.
 
-## Checking results against the paper
+## Records and storage
 
-`expected/paper_values.json` holds the paper's numbers keyed by table.
-When you reproduce a result, compare against it, respecting the stated
-Monte-Carlo standard errors (Table 5: ≤ 0.001 bits except the Dirichlet
-rows ≤ 0.013; Figure 2: profile-sampling standard errors over 40
-profiles; smoke runs use fewer samples, so agree only qualitatively).
-One known, documented residual:
+Follow `artifacts/alt2027/README.md`. Track small specifications, manifests,
+validation summaries, generated tables, and final figure assets. Keep numerical
+stores and bulk trial arrays outside Git, with durable archive locations and
+checksums recorded before a paper result is finalized. Local paths alone are
+working locations, not public reproducibility links.
 
-1. The certificate (self-reported error bound) of the Mellin series is
-   platform-sensitive in its last bits; `tests/test_mellin.py` explains
-   the guard. Results are unaffected — values are held to the exact
-   contour independently.
+The canonical corpus is `data/kjv.txt.gz`; its checksum and tokenization identity
+are in `data/kjv.manifest.json`. Preserve the bundled bytes. Treat other historical
+Bible files as distinct datasets until hashes and preprocessing are reconciled.
 
-(The corpus built by `scripts/get_kjv.py` is exactly the paper's corpus:
-915,860 tokens, 13,550 types. An earlier draft of the paper used a
-July run that differed by 11 tokens; the August 2026 revision adopted
-this repository's recipe as canonical, so there is no corpus residual.)
+## Manuscript practice
 
-## Performance and resource facts
-
-- Moment tables are the expensive part, and they persist in the
-  **universal table store**: a permanent, certified row store that
-  every experiment extends on demand and reuses. Default location:
-  `./tables/universal_v2` relative to the working directory (override
-  with the environment variable `LSA_UNIVERSAL_TABLES`; it is
-  gitignored). The first experiment that needs a row pays for it; every
-  later run finds it — after a few smoke runs the store makes repeat
-  experiments run in seconds. It is safe to delete (rows are rebuilt on
-  demand) and grows to a few GB across the full reproduction.
-  `LSA_TABLES_SOURCE=cache` switches to the legacy per-run recursion
-  cache under each experiment's `--cache-dir` (kept for regression
-  comparison; slower).
-- `LSA_NO_TRUNCATE=1` forces exact evaluation of every depth's
-  likelihood. Scripts that quote per-depth numbers (benchmark, depth
-  tilt, depth scaling, validation) set it themselves. Corpus scripts
-  that quote only the depth average leave the truncation on for speed;
-  the truncation threshold is far below quoted precision either way.
-- A small C kernel (`src/lsa/_kernel.c`) compiles itself on first use
-  and falls back to pure Python silently if no compiler is available;
-  correctness does not depend on it. `python -c "import lsa.kernel as
-  k; print(k.available)"` tells you which path is active.
-- On Linux/Python 3.11 a harmless `resource_tracker` KeyError message
-  can appear when a parallel run exits; it is a CPython shared-memory
-  cleanup race, not a failure.
-- The heavy full-scale runs (Figure 2's d = 10^6 panel, the full
-  benchmark, the full-corpus Bible runs, Table 8) are hours on a
-  multi-core machine. Always start with the smoke variant from the
-  manifest; each smoke run already lands on the paper's qualitative
-  pattern (and, for Table 7 row 1, on the exact published numbers).
-
-## Repository etiquette for agents
-
-- `data/` and `output/` are gitignored except the bundled
-  `data/kjv.txt.gz`. Do not commit experiment outputs or caches.
-- The two numerics implementations (`lsa/mixture_weights.py` reference,
-  `lsa/layered.py` + tables production) deliberately coexist; the tests
-  hold them to each other (Appendix C). Do not "deduplicate" them.
-- If you change any numerical code, run
-  `python scripts/validate_appendix_c.py` (full scale) and
-  `python -m pytest -q` before trusting new numbers — the paper's
-  Appendix C requires all checks to pass before any experiment.
+Keep the scientific text concise and preserve the agreed scope. State numerical
+comparisons symmetrically and distinguish cumulative regret from next-symbol
+loss. The central contribution combines a simple architecture, analytic
+expressions, and broad empirical competitiveness. Discuss unresolved provenance
+or verification work in project records and author discussions. The AI Disclosure
+accurately states that the authors reviewed the proofs by hand; it does not claim
+manual code review.

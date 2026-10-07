@@ -1,0 +1,934 @@
+{
+  "schema_version": 1,
+  "status": "draft_protocol_inventory",
+  "created": "2026-10-07",
+  "manuscript": "manuscript/snapshots/2026-10-07-alt-start/alt.tex",
+  "repository_inspected": "layered-simplex-architecture",
+  "source_note": "Stable LaTeX labels identify the retained items across the ALT formatting and filename updates.",
+  "scope": "All empirical items retained in the short ALT manuscript, including in-text controls and numerical checks. Historical repository experiments absent from this manuscript are excluded.",
+  "evidence_policy": {
+    "manuscript": "Reported specification/result; not a newly reproduced result.",
+    "verified_code": "Static inspection of candidate historical code; not proof that it generated the retained manuscript values.",
+    "asset": "Text extracted from retained figure assets.",
+    "execution": "Repository preparation and static inspection; production experiment reruns have not begun.",
+    "trial_increases": "Undecided. Previous suggestions to increase trial/profile counts have not been accepted as the production specification.",
+    "additional_baselines": "Undecided. Missing implementations of already reported methods must be supplied; suggested new controls are not silently part of this inventory."
+  },
+  "shared_protocols": {
+    "units": {
+      "next_symbol_kl": "bits",
+      "online_regret": "bits per symbol: -H(p)-E[log2 Q(X^N)]/N",
+      "bible_redundancy": "cumulative codelength/n minus empirical prefix unigram entropy, bits/token"
+    },
+    "benchmark_targets": [
+      {
+        "id": "uniform",
+        "definition": "p_i=1/d"
+      },
+      {
+        "id": "step",
+        "definition": "d/2 coordinates at 1/(2d), d/2 at 3/(2d)"
+      },
+      {
+        "id": "zipf_1",
+        "definition": "p_i=i^(-alpha)/sum_j j^(-alpha)",
+        "alpha": 1
+      },
+      {
+        "id": "zipf_1.5",
+        "definition": "p_i=i^(-alpha)/sum_j j^(-alpha)",
+        "alpha": 1.5
+      },
+      {
+        "id": "zipf_2",
+        "definition": "p_i=i^(-alpha)/sum_j j^(-alpha)",
+        "alpha": 2
+      },
+      {
+        "id": "zipf_3",
+        "definition": "p_i=i^(-alpha)/sum_j j^(-alpha)",
+        "alpha": 3
+      },
+      {
+        "id": "zipf_4",
+        "definition": "p_i=i^(-alpha)/sum_j j^(-alpha)",
+        "alpha": 4
+      },
+      {
+        "id": "zipf_5",
+        "definition": "p_i=i^(-alpha)/sum_j j^(-alpha)",
+        "alpha": 5
+      },
+      {
+        "id": "geometric",
+        "definition": "p_i proportional to 0.998^i, i=1,...,d",
+        "ratio": 0.998
+      },
+      {
+        "id": "dirichlet_1",
+        "definition": "symmetric Dirichlet draw with per-coordinate parameter 1"
+      },
+      {
+        "id": "dirichlet_half",
+        "definition": "symmetric Dirichlet draw with per-coordinate parameter 0.5"
+      }
+    ],
+    "methods": {
+      "add_one": "(m_i+1)/(n+d)",
+      "kt": "(m_i+0.5)/(n+d/2)",
+      "ristad": "Observed: (m_i+1)(n+1-s)/(n^2+n+2s); unseen: s(s+1)/((d-s)(n^2+n+2s)); add-one if s=d.",
+      "good_turing_hybrid": "Before normalization, for count t use t/n if t>c_(t+1), otherwise (c_(t+1)+1)(t+1)/(n c_t); unseen symbols use t=0.",
+      "dirichlet_concentration_mixture": "Uniform prior on tau/d=2^j, j=-24,...,4; exact Dirichlet evidence determines posterior weights; component predictor (m_i+tau/d)/(n+tau).",
+      "absolute_discounting": "delta=c1/(c1+2c2); observed (m_i-delta)/n; delta*s/n shared among unseen labels. Preserve and report infinite/undefined cases specified in the manuscript; do not silently smooth them.",
+      "natural_oracle": "q_i=S_(m_i)/c_(m_i), using true target masses within count classes.",
+      "lsa_fixed": "Unit-power LSA at the explicitly specified depth.",
+      "lsa_depth_mixture": "Equal prior over integer depths including L=0 where specified; weights updated by sequence evidence.",
+      "lsa_power_mixture": "One simplex layer raised to fixed integer w; equal prior over w=0,...,80; w=0 is uniform. This is not equivalent to setting unit-power depth L=w."
+    },
+    "reported_benchmark_method_ids": [
+      "add_one",
+      "kt",
+      "ristad",
+      "good_turing_hybrid",
+      "dirichlet_concentration_mixture",
+      "absolute_discounting",
+      "lsa_fixed",
+      "lsa_depth_mixture",
+      "natural_oracle"
+    ],
+    "unresolved_sampling": {
+      "dirichlet_target_redrawn_each_trial": null,
+      "figures_and_primary_table_share_samples": null,
+      "posterior_table_sample_run": null,
+      "seeds_for_retained_results": null,
+      "note": "Historical benchmark code redraws each Dirichlet target once per trial, then draws a separate multinomial sample at each n. This is verified code behavior, not established provenance of current tables/figures."
+    }
+  },
+  "experiments": [
+    {
+      "id": "architecture_prior_draw",
+      "labels": [
+        "fig:lsa"
+      ],
+      "kind": "illustrative_prior_draw",
+      "manuscript": {
+        "d": 24,
+        "L": 4,
+        "draws": 1,
+        "seed": null,
+        "asset": "figures/alt/construction_tikz.tex"
+      },
+      "candidate_drivers": [
+        "scripts/fig1_prior_draws.py"
+      ],
+      "verified_code": {
+        "default_seed": 7,
+        "output": "fig1_prior_draw.pdf",
+        "procedure": "Draw independent Dirichlet(1,...,1) layers, multiply coordinates and normalize."
+      },
+      "missing_work": [
+        "Record source draw/seed for the retained TikZ depiction or regenerate reproducibly; candidate seed 7 has not been matched to the current TikZ values."
+      ],
+      "trial_increase": "not_applicable"
+    },
+    {
+      "id": "depth_target_spectrum",
+      "labels": [
+        "fig:spectrum"
+      ],
+      "kind": "sampled_online_regret",
+      "manuscript": {
+        "panels": [
+          {
+            "d": 1000,
+            "N": 316,
+            "L_max": 69
+          },
+          {
+            "d": 10000,
+            "N": 1000,
+            "L_max": 92
+          },
+          {
+            "d": 1000000,
+            "N": 1000,
+            "L_max": 138
+          }
+        ],
+        "profiles_per_point": 40,
+        "depths": "Every integer 0 through panel L_max; representative curves displayed.",
+        "mixture": "Equal prior over 0,...,L_max",
+        "alpha_grid": null,
+        "error_bars": "One standard error",
+        "asset": "figures/alt/complexity_spectrum_L0.pdf"
+      },
+      "candidate_drivers": [
+        "scripts/depth_tilt_experiment.py",
+        "scripts/depth_tilt_report.py"
+      ],
+      "verified_code": {
+        "default_seed": 20260401,
+        "default_alpha_grid": [
+          0,
+          0.3,
+          0.6,
+          0.9,
+          1.2,
+          1.5,
+          1.8,
+          2.1,
+          2.4,
+          2.7,
+          3
+        ],
+        "default_profiles": 40,
+        "depths": "1,...,L_max only",
+        "rng": "[seed,d,alpha_index]",
+        "historical_manifest_id": "fig2_table1"
+      },
+      "missing_work": [
+        "Add analytic L=0 and correct mixture prior denominator.",
+        "Confirm/freeze the alpha grid and representative depth selection; do not infer grid solely from x-axis ticks.",
+        "Validate the new engine through L=138 and d=1e6, not merely benchmark depth80.",
+        "Retain sampled profiles and per-depth losses/SEs."
+      ],
+      "trial_increase": "undecided"
+    },
+    {
+      "id": "benchmark_primary_kl",
+      "labels": [
+        "tab:bench"
+      ],
+      "kind": "paired_next_symbol_kl",
+      "manuscript": {
+        "d": 10000,
+        "n": 1000,
+        "trials": 20,
+        "targets": "shared_protocols.benchmark_targets",
+        "methods": "shared_protocols.reported_benchmark_method_ids",
+        "fixed_depth": 22,
+        "mixture_depths": [
+          0,
+          80
+        ],
+        "prior": "uniform",
+        "predictor_normalization": "Numerical predictors normalized before scoring; exact method subset unspecified.",
+        "seed": null
+      },
+      "candidate_drivers": [
+        "scripts/benchmark_experiment.py",
+        "scripts/benchmark_report.py",
+        "src/lsa/estimators.py"
+      ],
+      "verified_code": {
+        "default_seed": 20260501,
+        "default_trials": 20,
+        "default_fixed_depths": [
+          5,
+          22
+        ],
+        "default_mixture_depths": [
+          1,
+          80
+        ],
+        "classical_methods": [
+          "add_one",
+          "add_half",
+          "braess_sauer",
+          "good_turing",
+          "ristad"
+        ],
+        "dirichlet_targets": "Redrawn once per trial; held across that trial's n values.",
+        "stored_statistics": "Means, marginal SEs, mean posteriors; no per-trial loss arrays in final JSON.",
+        "normalization": "kl_bits uses supplied q without a normalization step; current manuscript normalization claim is not implemented there.",
+        "historical_manifest_id": "fig6_table5_table6"
+      },
+      "missing_work": [
+        "Implement reported Dir-tau and AD methods; remove unreported Braess-Sauer from manuscript outputs.",
+        "Add L=0 and identify/freeze normalization policy.",
+        "Save targets/counts, raw and normalized probabilities or class summaries, individual losses and paired differences.",
+        "Specify seeds and Dirichlet-target protocol.",
+        "Update report from its historical n=20000 table selection to the retained n=1000 table."
+      ],
+      "trial_increase": "undecided"
+    },
+    {
+      "id": "benchmark_learning_curves",
+      "labels": [
+        "fig:orlitsky"
+      ],
+      "kind": "paired_next_symbol_kl_curves",
+      "manuscript": {
+        "d": 10000,
+        "n_min": 1000,
+        "n_max": 20000,
+        "n_grid": null,
+        "trials": 20,
+        "targets": "shared_protocols.benchmark_targets",
+        "methods": "Same nine estimators as primary table",
+        "fixed_depth": 22,
+        "mixture_depths": [
+          0,
+          80
+        ],
+        "error_bars": "Standard errors",
+        "asset": "figures/alt/regret_vs_n_figures.pdf",
+        "uniform_plotting_threshold_bits": 1e-14,
+        "nonfinite_ad": "Omitted from plot and identified"
+      },
+      "candidate_drivers": [
+        "scripts/benchmark_experiment.py",
+        "scripts/benchmark_report.py"
+      ],
+      "verified_code": {
+        "default_n_grid": [
+          1000,
+          2000,
+          3000,
+          5000,
+          7000,
+          10000,
+          14000,
+          20000
+        ],
+        "sample_relationship": "Independent multinomial count draws at successive n within each trial; not nested prefixes."
+      },
+      "missing_work": [
+        "Resolve link to primary/power table runs and freeze exact n grid.",
+        "Share authoritative records between curve and table renderers.",
+        "Preserve visible step plateau and larger-n Zipf-1 gaps when interpreting broad competitiveness; no requirement of universal wins.",
+        "Use a declared display floor, not replacement of raw numerical losses."
+      ],
+      "trial_increase": "undecided"
+    },
+    {
+      "id": "benchmark_depth_posteriors",
+      "labels": [
+        "tab:posteriors"
+      ],
+      "kind": "derived_benchmark_summary",
+      "manuscript": {
+        "d": 10000,
+        "n_values": [
+          1000,
+          20000
+        ],
+        "targets": "shared_protocols.benchmark_targets",
+        "depths": [
+          0,
+          80
+        ],
+        "summary": "Mean posterior across trials. Shortest contiguous interval with at least 95% mass, ties favor greater enclosed mass; show actual mass. Use interval if span>=5 depths, otherwise weights>=0.05 rounded to two decimals.",
+        "trial_count": null
+      },
+      "candidate_drivers": [
+        "scripts/benchmark_experiment.py",
+        "scripts/benchmark_report.py"
+      ],
+      "verified_code": {
+        "historical_report": "Lists individual posterior weights >=0.05 only; lacks current shortest-interval rule."
+      },
+      "missing_work": [
+        "Identify parent run and its trials.",
+        "Implement documented interval/tie policy.",
+        "Save per-trial posterior arrays including L0.",
+        "Assess larger depth ceilings on alpha>=3 where reported intervals reach80; a robustness addition requires a frozen scope decision."
+      ],
+      "trial_increase": "inherits_parent_run_undecided"
+    },
+    {
+      "id": "uniform_component_ablation",
+      "labels": [
+        "sec:experiments"
+      ],
+      "location": "Findings paragraph",
+      "kind": "in_text_ablation",
+      "manuscript": {
+        "d": 10000,
+        "n": 1000,
+        "targets": [
+          "uniform",
+          "step"
+        ],
+        "with_uniform_depths": [
+          0,
+          80
+        ],
+        "without_uniform_depths": [
+          1,
+          80
+        ],
+        "prior": "Equal within each mixture",
+        "reported_positive_depth_losses": {
+          "uniform": 0.0396,
+          "step": 0.2052
+        },
+        "reported_with_uniform_losses": {
+          "uniform": "<0.001",
+          "step": 0.1907
+        },
+        "trials": null,
+        "seed": null
+      },
+      "candidate_drivers": [
+        "scripts/benchmark_experiment.py",
+        "src/lsa/codelength.py"
+      ],
+      "verified_code": {
+        "positive_depth_mixture": "Existing engine supplies the positive-only mixture; L0 wrapper still needed."
+      },
+      "missing_work": [
+        "Produce both averages from the same saved evidence/profile records and explicitly document trial count.",
+        "Printed positive-only numbers coincide with add-one; this is plausible under L1 dominance, not a demonstrated error.",
+        "A matched uniform-atom baseline ablation is optional and undecided."
+      ],
+      "trial_increase": "undecided"
+    },
+    {
+      "id": "fixed_integer_power_benchmark",
+      "labels": [
+        "tab:powers-bench",
+        "app:powers"
+      ],
+      "kind": "paired_next_symbol_kl_independent_replication",
+      "manuscript": {
+        "d": 10000,
+        "n": 1000,
+        "trials": 20,
+        "targets": "shared_protocols.benchmark_targets",
+        "methods": "Primary benchmark methods plus lsa_power_mixture",
+        "fixed_depth": 22,
+        "depth_mixture": [
+          0,
+          80
+        ],
+        "single_layer_powers": [
+          0,
+          80
+        ],
+        "priors": "Uniform over81 components in each mixture",
+        "samples": "Common to all columns; independent from tab:bench",
+        "seed": null,
+        "reported_uncertainty": "Marginal mean SE <=0.0136 bits; selected power-minus-depth differences reported with one paired SE."
+      },
+      "candidate_drivers": [
+        "scripts/benchmark_experiment.py",
+        "src/lsa/codelength.py",
+        "src/lsa/layered.py"
+      ],
+      "verified_code": {
+        "powered_driver_found": false,
+        "unit_power_only": true
+      },
+      "missing_work": [
+        "Rebuild powered kernel and fixed-power mixture; original cloud implementation is unavailable.",
+        "Independently validate w0 uniform, w1 Laplace, w2 Gamma-product identity, and high w including80.",
+        "Implement missing reported comparators as for primary benchmark.",
+        "Save full paired-trial statistics; preserve independent-run relationship unless explicitly changed in the frozen specification."
+      ],
+      "trial_increase": "undecided"
+    },
+    {
+      "id": "bible_prefix_codelength",
+      "labels": [
+        "tab:bible"
+      ],
+      "kind": "deterministic_corpus_prefix_codes",
+      "manuscript": {
+        "source": "Project Gutenberg #10 King James Bible",
+        "representation": "Case-preserving word-and-punctuation tokens",
+        "tokens": 915860,
+        "types": 13550,
+        "d": 100000,
+        "prefixes": [
+          10000,
+          30000,
+          100000,
+          300000,
+          915860
+        ],
+        "prefix_types": [
+          1160,
+          2119,
+          3839,
+          6922,
+          13550
+        ],
+        "methods": [
+          "add_one",
+          "kt",
+          "ristad",
+          "good_turing_hybrid",
+          "dirichlet_concentration_mixture",
+          "lsa_depth_mixture"
+        ],
+        "depths": [
+          0,
+          54
+        ],
+        "prior": "uniform",
+        "metric": "Cumulative coding redundancy above each prefix's empirical unigram entropy",
+        "dictionary": "Conditioned on token dictionary and tokenization rule",
+        "trials": null
+      },
+      "candidate_drivers": [
+        "scripts/get_kjv.py",
+        "scripts/unigram_experiment.py",
+        "scripts/bible_baselines_experiment.py",
+        "scripts/bible_report.py"
+      ],
+      "verified_code": {
+        "corpus_asset": "data/kjv.txt.gz",
+        "recipe": "get_kjv.py documents Gutenberg body extraction, verse removal, possessive handling, removal of stray stars/hyphens and case-preserving word/punctuation tokenization.",
+        "expected_counts_in_code": [
+          915860,
+          13550
+        ],
+        "default_l_max_at_d1e5": 54,
+        "engine_depths": "1,...,54",
+        "baseline_methods": [
+          "add_one",
+          "add_half",
+          "braess_sauer",
+          "ristad",
+          "good_turing"
+        ],
+        "historical_manifest_id": "table7_fig7"
+      },
+      "missing_work": [
+        "Use the pinned data/kjv.manifest.json identity for every displayed column and record the corpus hash in each run.",
+        "Add uniform component and Dir-tau sequential/evidence code.",
+        "Record full code lengths, empirical entropies, prefix counts and posterior summaries before rounding.",
+        "PMWM BPE-production wrappers are not the appropriate entry point; use its mathematical profile engine without changing the scientific tokenization.",
+        "Reason for chosen ceiling and any sensitivity test remain to be decided/documented."
+      ],
+      "trial_increase": "not_applicable"
+    },
+    {
+      "id": "bible_short_prefix_controls",
+      "labels": [
+        "app:experiments"
+      ],
+      "location": "Bible controls and short prefixes",
+      "kind": "deterministic_corpus_prefix_codes",
+      "manuscript": {
+        "prefixes": [
+          100,
+          500
+        ],
+        "methods": [
+          "good_turing_hybrid",
+          "lsa_depth_mixture"
+        ],
+        "reported_redundancy_bits_per_token": {
+          "100": {
+            "good_turing": 3.747,
+            "lsa": 3.826
+          },
+          "500": {
+            "good_turing": 3.066,
+            "lsa": 3.071
+          }
+        },
+        "tokenization": null,
+        "d": null,
+        "depth_range": null
+      },
+      "candidate_drivers": [
+        "scripts/unigram_experiment.py",
+        "scripts/bible_baselines_experiment.py"
+      ],
+      "missing_work": [
+        "Specify tokenization/alphabet/depth range rather than silently assuming main-table settings.",
+        "Regenerate exact prefix records and chain-rule checks."
+      ],
+      "trial_increase": "not_applicable"
+    },
+    {
+      "id": "bible_second_tokenization_controls",
+      "labels": [
+        "app:experiments"
+      ],
+      "location": "Bible controls and short prefixes",
+      "kind": "tokenization_sensitivity_control",
+      "manuscript": {
+        "tokens": 917868,
+        "types": 13554,
+        "representation": "Words and punctuation separately",
+        "methods_with_claimed_agreement": [
+          "add_one",
+          "kt",
+          "ristad",
+          "good_turing_hybrid"
+        ],
+        "agreement_to_main_table_bits_per_token": 0.001,
+        "dirichlet_control": "29-component mixture described, but current paragraph does not map its output to a Table2 column.",
+        "prefixes": null,
+        "recipe": null,
+        "d": null
+      },
+      "candidate_drivers": [
+        "scripts/bible_baselines_experiment.py"
+      ],
+      "missing_work": [
+        "Recover or specify the second tokenizer/stream and exact prefix mapping.",
+        "Resolve whether any displayed main-table column historically used this stream; different counts alone do not imply wrong results.",
+        "Retain control only with an explicit method/stream/result mapping."
+      ],
+      "trial_increase": "not_applicable"
+    },
+    {
+      "id": "factorial_finite_sample_scaling",
+      "labels": [
+        "tab:alphabet",
+        "tab:data",
+        "app:experiments"
+      ],
+      "kind": "shared_factorial_online_regret",
+      "manuscript": {
+        "alphas": [
+          1.5,
+          2,
+          3,
+          4
+        ],
+        "d_min": 1000,
+        "d_max": 100000,
+        "d_grid": null,
+        "N_notation": [
+          "10^2",
+          "10^2.5",
+          "...",
+          "10^4"
+        ],
+        "N_integer_rounding": null,
+        "c": "c_star",
+        "depth_rounding": null,
+        "profiles_per_cell": null,
+        "k_N": "Exact finite-alphabet expectation",
+        "description_term": "E[log2 binom(d,K_N)]",
+        "reports": [
+          {
+            "id": "alphabet_scaling",
+            "label": "tab:alphabet",
+            "displayed_N": [
+              100,
+              1000,
+              10000
+            ],
+            "metric": "Slope and fitted offset of N R_N/k_N versus E log2 binom(d,K_N)/k_N as d varies."
+          },
+          {
+            "id": "data_scaling",
+            "label": "tab:data",
+            "displayed_d": [
+              1000,
+              100000
+            ],
+            "metric": "Fit R_N proportional to N^(-s); compare measured s to 1-1/alpha."
+          }
+        ]
+      },
+      "candidate_drivers": [
+        "scripts/factorial_scaling_experiment.py",
+        "scripts/data_scaling_experiment.py",
+        "scripts/scaling_report.py"
+      ],
+      "verified_code": {
+        "historical_manifest_id": "fig3_fig4_table2_table3",
+        "manifest_d_grid": [
+          1000,
+          3162,
+          10000,
+          31623,
+          100000
+        ],
+        "manifest_N_grid": [
+          100,
+          316,
+          1000,
+          3162,
+          10000
+        ],
+        "manifest_alphas": [
+          1.5,
+          2,
+          3,
+          4
+        ],
+        "manifest_profiles_per_cell": 5000,
+        "manifest_cells": 100,
+        "driver_default_N_grid": [
+          50,
+          100,
+          200,
+          500,
+          1000,
+          2000,
+          5000
+        ],
+        "driver_default_alphas": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "default_seed": 20260814,
+        "depth_rule": "max(1,round(c*ln d))",
+        "estimator": "data_scaling_experiment.py currently uses legacy reference log_q_lambda_laplace and selected moment tables, not PMWM's production scan.",
+        "report_seed": 20260403,
+        "report_description_draws": 1000,
+        "report_fit": "Free OLS slope and intercept via polyfit(xs,ys,1); intercept is printed as B.",
+        "description_sampling": "scaling_report.py samples description costs separately from the regret profiles."
+      },
+      "missing_work": [
+        "Freeze explicit grids, integer rounding, profile counts and seeds; historical command and bare defaults disagree.",
+        "Port evaluation to PMWM while preserving the mathematical fixed-depth model.",
+        "Resolve whether B is a free-intercept fit or a slope-one fitted offset; current caption is not fully explicit.",
+        "Unify or explicitly document description-term sampling and retain uncertainty for fitted slopes.",
+        "Report only retained alphabet/data tables; historical discovery/data plots and refined-exponent columns are not in current scope."
+      ],
+      "trial_increase": "undecided"
+    },
+    {
+      "id": "depth_coefficient_scaling",
+      "labels": [
+        "fig:depth",
+        "app:experiments"
+      ],
+      "kind": "sampled_online_regret_by_depth",
+      "manuscript": {
+        "d": 100000,
+        "N": 1000,
+        "alphas_in_prose": [
+          1.5,
+          2,
+          3,
+          4
+        ],
+        "alphas_visible_in_asset": [
+          2,
+          3,
+          4
+        ],
+        "c_grid": null,
+        "integer_depth_rule": null,
+        "profiles_per_point": null,
+        "metric": "P=N R_N/k_N",
+        "heuristic": "rho0(c) for c<=c_star, one above; operational conversion to plotted P unspecified.",
+        "asset": "figures/alt/depth_scaling.pdf"
+      },
+      "candidate_drivers": [
+        "scripts/depth_scaling_experiment.py"
+      ],
+      "verified_code": {
+        "historical_manifest_id": "fig5_table4",
+        "default_alphas": [
+          2,
+          3,
+          4
+        ],
+        "default_c_grid": [
+          0.25,
+          0.5,
+          0.75,
+          1,
+          1.25,
+          1.5,
+          1.75,
+          2,
+          2.37,
+          2.75,
+          3,
+          3.5,
+          4,
+          4.5,
+          5,
+          5.5,
+          6
+        ],
+        "depth_rule": "max(1,round(c*ln d))",
+        "default_profiles": 40,
+        "default_description_draws": 1000,
+        "default_seed": 20260402,
+        "predicted_curve": "clipped_rho0(c)*E[log2 binom(d,K_N)]/k_N + alpha*log2(e)-2",
+        "sampling": "Same sampled profiles reused across c; description expectation estimated separately first."
+      },
+      "missing_work": [
+        "Resolve prose/asset alpha-set discrepancy.",
+        "Freeze c grid and rounding; candidate grid is not yet adopted.",
+        "Recover asset provenance or explicitly choose and document the complete heuristic formula; do not silently restore the old offset.",
+        "Record measured means/SEs and best-tested-c comparison from shared records."
+      ],
+      "trial_increase": "undecided"
+    },
+    {
+      "id": "numerical_validation_suite",
+      "labels": [
+        "app:qlambda",
+        "app:validation"
+      ],
+      "kind": "numerical_checks",
+      "manuscript": {
+        "checks": [
+          {
+            "id": "kernel_recursion_l2",
+            "reported": "Adaptive quadrature agreement <2e-6",
+            "error_quantity": null
+          },
+          {
+            "id": "closed_form_l1",
+            "reported": "<2e-9 relative",
+            "relative_quantity": null
+          },
+          {
+            "id": "exchangeability_identities",
+            "reported": "2e-5 at d1e4; 2e-3 at d1e6, nats",
+            "depths": null
+          },
+          {
+            "id": "predictive_normalization",
+            "reported": "1e-5 at L5; 4e-4 at L22",
+            "profiles": null
+          },
+          {
+            "id": "mellin_rows",
+            "reported": "L<=138; step halving/Meijer-G <3e-9",
+            "r_grid": null,
+            "t_grid": null,
+            "error_quantity": null
+          },
+          {
+            "id": "recursion_mellin_high_precision",
+            "reported": "L2,r<=3;45-digit contour;2.2e-16 relative",
+            "grid": null
+          },
+          {
+            "id": "evidence_independent_integrals",
+            "reported": "L<=3;MC within2.6SE;simplex quadrature1.1e-9",
+            "sample_count": null
+          },
+          {
+            "id": "independent_reference",
+            "reported": "Small-alphabet identities agree within5e-13",
+            "precise_cases": null
+          },
+          {
+            "id": "bible_chain_rule",
+            "reported": "Next-token evidence ratios within1e-12; summed log-loss within3e-4 total bits over thousands of steps",
+            "prefixes": null
+          }
+        ]
+      },
+      "candidate_drivers": [
+        "scripts/validate_appendix_c.py",
+        "scripts/saddle_accuracy.py",
+        "scripts/ladder_accuracy.py",
+        "tests/test_mellin.py",
+        "tests/test_layered.py",
+        "tests/test_mixture_weights.py"
+      ],
+      "external_candidates": [
+        "work/revision/original/verify_lsa.py"
+      ],
+      "verified_code": {
+        "main_gate": "validate_appendix_c.py implements recursion/L1/exchangeability/normalization/A_lambda checks; it does not implement every current AppendixH row.",
+        "recursion_quantity": "Maximum absolute difference of log kernels in nats; r in{0,3,11},t in{0.5,5,200},L2.",
+        "l1_quantity": "Relative error of log2 evidence, not relative probability error.",
+        "exchangeability_quantity": "max(|ln(d*q1)|,|ln(d*q2+d(d-1)*q11)|). Full runner checks d10000,L5/22; no d1e6 call.",
+        "normalization_case": "One Zipf1.5 multinomial profile, n1000,d10000,seed11; L5/22.",
+        "external_verify_note": "verify_lsa.py is an available independent diagnostic candidate and executes MC/integration at top level; do not import casually."
+      },
+      "missing_work": [
+        "Specify exact error metrics and case lists for each published row.",
+        "Validate new production engine through L80 and spectrum L138, including high-depth saddle branch and zero-count amplification at d1e6.",
+        "Independently validate powered kernel and each added comparison implementation.",
+        "Record raw normalization errors before any correction, high-precision/evidence-ratio accuracy, grid/tail refinement and branch/cutoff settings.",
+        "Treat historical PMWM validations as bounded checks, not blanket error guarantees for current experiments.",
+        "Attach hardware, runtime, memory, code/environment/store versions to new validation records."
+      ],
+      "trial_increase": "undecided_for_MC_checks"
+    },
+    {
+      "id": "mathematical_identity_checks",
+      "labels": [
+        "app:regret",
+        "app:support",
+        "app:validation"
+      ],
+      "kind": "finite_enumeration_and_reference_checks",
+      "manuscript": {
+        "support_counterexample": {
+          "d": 3,
+          "N": 5,
+          "claim": "Naming-only support bound fails without conditional entropy term"
+        },
+        "independent_identities": [
+          "Sequence and predictive normalization",
+          "KL chain rule",
+          "Discovered-set decomposition"
+        ]
+      },
+      "candidate_drivers": [
+        "scripts/exact_online_regret.py",
+        "scripts/validate_appendix_c.py"
+      ],
+      "external_candidates": [
+        "work/revision/original/verify_lsa.py"
+      ],
+      "verified_code": {
+        "external_counterexample": "verify_lsa.py contains explicit d3,N5,L1 uniform-target enumeration.",
+        "local_profile_check": "validate_appendix_c.py verifies A_lambda total mass and uniform-target formula at d5,N6; this is related but not identical to the support counterexample."
+      },
+      "missing_work": [
+        "Map each retained mathematical check to an explicit script/test and machine-readable result.",
+        "Do not substitute the related A_lambda check for the separate support-information identity."
+      ],
+      "trial_increase": "not_applicable_for_enumeration"
+    }
+  ],
+  "global_engine_gaps": [
+    "PMWM/LSA public codelength and predictive APIs currently index L1..Lmax; manuscript includes L0.",
+    "Current unit-power kernels/anchor store cannot evaluate fixed powered layers without a new kernel path.",
+    "Sealed anchor metadata records levels2..53; depths>=54 use saddle approximation. Exact-build flag does not disable that approximation or interpolation.",
+    "Stored-column design guard is L<=70; exact reference validation above70 needs an explicit supported path rather than an assumed cache extension.",
+    "Metadata and configuration must identify actual evaluator/settings; do not assume historical tables used the newly recovered production mode.",
+    "Historical manifests/README use earlier figure numbering and contain broader experiments; they are candidate-driver maps, not the current scientific specification."
+  ],
+  "validation_evidence_from_prior_read_only_audit": [
+    {
+      "source": "external:product_model_with_memory/output/compare_fixed.jsonl:1",
+      "scope": "22 fixed profiles; counts through17,005,209,d<=300000,Lmax<=53; max absolute difference5.625188e-6 total bits in depth-averaged log evidence",
+      "limit": "No depth54..80/138 or next-symbol-KL validation"
+    },
+    {
+      "source": "external:product_model_with_memory/output/system_endtoend/results.json:96",
+      "scope": "BPE text8 state-family sensitivity: delta2.170584e-5 bits/token at cutoff54 and Lmax54",
+      "limit": "Different task, only level54 substituted; not a bound for current depth80 profiles"
+    },
+    {
+      "source": "external:product_model_with_memory/HANDOVER.md:2365",
+      "scope": "Earlier interpolation-failure diagnosis superseded by corrected evaluator and reference comparisons",
+      "limit": "Do not present old compare_prod failures as established current defects"
+    }
+  ],
+  "excluded_historical_items": [
+    "Order-one/context-family Bible experiments, online context promotion and memory-model experiments",
+    "Bible BPE checks",
+    "Separate symbol-discovery and data-scaling figures absent from current manuscript",
+    "Removed refined-exponent columns",
+    "Random or reciprocal powers",
+    "Powered-layer Bible experiment in unused historical appendix_powers.tex",
+    "All other historical experiments not referenced by the retained short ALT paper"
+  ],
+  "decisions_pending": [
+    "Production trial/profile counts and seeds, including whether to retain two independent benchmark runs",
+    "Exact Dirichlet target-draw protocol and n-grid sample relationship",
+    "Authoritative table/figure/posterior data sharing",
+    "Normalization policy and named affected methods",
+    "Second Bible tokenization recipe and column mapping",
+    "Depth-scaling alpha set, c grid and complete heuristic formula",
+    "Alphabet/data grids, integer rounding, description-term sampling and B fit definition",
+    "Any new baseline, matched-uniform control, cutoff sensitivity or runtime study beyond rerunning existing reported items"
+  ]
+}

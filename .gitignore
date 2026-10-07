@@ -9,7 +9,18 @@ build/
 output/
 data/*
 !data/kjv.txt.gz
+!data/README.md
+!data/kjv.manifest.json
 # compiled kernel binaries: built on demand per machine by lsa/kernel.py
 src/lsa/*.so
 tables/
 _to_delete/
+# LaTeX build products; required PDF figure assets remain tracked.
+*.aux
+*.bbl
+*.blg
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.toc
+*.out

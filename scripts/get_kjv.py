@@ -61,7 +61,6 @@ URLS = [
 
 EXPECTED_TOKENS = 915_860
 EXPECTED_TYPES = 13_550
-PAPER_TOKENS = 915_849
 PREFIX_TYPES = {10_000: 1_160, 30_000: 2_119, 100_000: 3_839, 300_000: 6_922}
 
 
@@ -119,8 +118,7 @@ def main() -> int:
         out.write_text(" ".join(tokens))
 
     n, types = len(tokens), len(set(tokens))
-    print(f"tokens {n:,} (expected {EXPECTED_TOKENS:,}; "
-          f"paper {PAPER_TOKENS:,}), types {types:,} "
+    print(f"tokens {n:,} (expected {EXPECTED_TOKENS:,}), types {types:,} "
           f"(expected {EXPECTED_TYPES:,})")
     ok = n == EXPECTED_TOKENS and types == EXPECTED_TYPES
     for k, expected in PREFIX_TYPES.items():

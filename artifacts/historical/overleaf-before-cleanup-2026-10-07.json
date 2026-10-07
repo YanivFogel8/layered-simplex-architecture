@@ -1,0 +1,16 @@
+{
+  "record_kind": "historical_source_archive",
+  "archive_id": "overleaf-before-cleanup-2026-10-07",
+  "filename": "overleaf-arxiv-before-cleanup-2026-10-07.zip",
+  "bytes": 16811064,
+  "sha256": "2a338048fafeebf93f03852ddd7ac0425480a42baf31de2d400eb198fc20a495",
+  "working_location": "output/historical/overleaf-arxiv-before-cleanup-2026-10-07.zip",
+  "archive_uri": null,
+  "status": "local_backup_preserved; durable publication location to be assigned before relying on historical raw results",
+  "contents": "Original Overleaf export before cleanup, including older manuscript files, code, data, figures, results and nested archives.",
+  "notes": [
+    "The nested data/files_15_8.zip includes further historical depth-80 trial outputs and drivers.",
+    "Historical datasets and method conventions must be reconciled with the ALT protocol before comparisons.",
+    "This record identifies preserved historical material; it is not a new ALT run."
+  ]
+}

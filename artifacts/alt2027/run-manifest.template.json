@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "record_kind": "template",
+  "run_id": null,
+  "experiment_id": null,
+  "purpose": null,
+  "status": "not_started",
+  "supersedes_run_id": null,
+  "protocol": {
+    "path": null,
+    "revision": null,
+    "sha256": null
+  },
+  "code": {
+    "repository": null,
+    "commit": null,
+    "working_tree_clean": null
+  },
+  "engine": {
+    "repository": null,
+    "commit": null,
+    "source_files_sha256": {}
+  },
+  "environment": {
+    "lock_path": null,
+    "lock_sha256": null,
+    "packages_artifact": null,
+    "python": null,
+    "platform": null
+  },
+  "machine": {
+    "cpu": null,
+    "ram_bytes": null,
+    "workers": null,
+    "threads_per_worker": null
+  },
+  "command_argv": [],
+  "working_directory": null,
+  "started_at_utc": null,
+  "finished_at_utc": null,
+  "inputs": [],
+  "randomness": {
+    "generator": null,
+    "seed_scheme": null,
+    "target_draw_policy": null,
+    "samples_artifact": null
+  },
+  "settings": {},
+  "numerics": {
+    "store_id": null,
+    "store_manifest_sha256": null,
+    "kernel_family": null,
+    "settings": {},
+    "validation_record": null,
+    "store_content_artifact": null,
+    "store_content_sha256": null
+  },
+  "outputs": [],
+  "artifact_entry_fields": [
+    "role",
+    "path",
+    "archive_uri",
+    "bytes",
+    "sha256"
+  ],
+  "trial_summary": {
+    "planned": null,
+    "successful": null,
+    "failed": null
+  },
+  "diagnostics_artifact": null,
+  "logs_artifact": null,
+  "exit_code": null
+}
