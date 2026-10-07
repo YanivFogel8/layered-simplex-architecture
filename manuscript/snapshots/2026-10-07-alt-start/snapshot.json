@@ -1,7 +1,7 @@
 {
   "snapshot_date": "2026-10-07",
-  "description": "ALT starting point converted from the revised shorter manuscript. Scientific text, mathematics, bibliography, and figure contents preserved. Official anonymous ALT formatting applied; AISTATS checklist removed; AI statement titled AI Disclosure. Existing experiment results retained pending the planned reruns.",
-  "main_file": "main_shorter.tex",
+  "description": "ALT starting point from the revised shorter manuscript, with official anonymous ALT formatting and a quick page-break/float pass. Scientific text, mathematics, bibliography contents, and graphics preserved. AISTATS checklist removed; AI statement titled AI Disclosure. Files use alt.tex and references_alt.bib. Existing results retained pending planned reruns.",
+  "main_file": "alt.tex",
   "authoritative_editing_location": "Overleaf",
   "official_template_url": "https://www.engineering.upenn.edu/~surbhig/alt2027-template.zip",
   "template_sha256": "ec1be005a4517032bec72376d9500c53e98cbfe0300b12e5b3adf4eb97756c70",
@@ -9,21 +9,23 @@
   "local_build": {
     "engine": "pdfLaTeX",
     "main_text_pages": 12,
-    "total_pages": 31,
+    "total_pages": 30,
     "unresolved_references": 0,
-    "overfull_boxes": 0
+    "overfull_boxes": 0,
+    "references_start_page": 12,
+    "appendix_start_page": 15
   },
   "experiment_status": "Existing manuscript results preserved; reruns have not begun.",
   "files_sha256": {
-    "main_shorter.tex": "ff25774d7a2425c46a75b4bf8547d21f7457230a26fa405480da96a90e05acad",
-    "references_shorter.bib": "8893075208ac2b89eca47cdd2723fabb0f48ee9fd62a6bfbf55903240e425c70",
     "alt2027.cls": "805dcf98623bf5b6e4d851c771c9af020b44e7cdacaf57ad28ac7d38188d6501",
     "jmlr.cls": "105ba77a8d57d9e991e34d4b9c9da60b6fa0334c80cae6fc21c31e23ae6c1baa",
     "jmlrutils.sty": "87ad4373179051c77d9257e8196dddb758dd838700985c289e16ec939faaaaba",
     "figures/alt/construction_tikz.tex": "f09ca7f3018dae626877cfe9b38989f45b2d4b45d25fbf5fc7a6b0ac0e80182c",
     "figures/alt/complexity_spectrum_L0.pdf": "1f70b2cfc3057b7083c53f4a977ca214f2037a484b73221fcd42da42bc01e7a4",
     "figures/alt/regret_vs_n_figures.pdf": "e1b562ac3cd5831f475315e5fb72680fba5f00cfe53e68ecc98a6be5286a4eda",
-    "figures/alt/depth_scaling.pdf": "83af9ce48aa473ce643f1e6cdd3255a709863e5d2e8fd3ff284022fae28678ce"
+    "figures/alt/depth_scaling.pdf": "83af9ce48aa473ce643f1e6cdd3255a709863e5d2e8fd3ff284022fae28678ce",
+    "references_alt.bib": "8893075208ac2b89eca47cdd2723fabb0f48ee9fd62a6bfbf55903240e425c70",
+    "alt.tex": "9132e804fd97f9269905c25d2c4485196b6da21ccb5c8484bf76633c4f75793a"
   },
   "overleaf_verification": {
     "downloaded_source_matches": true,
@@ -31,8 +33,9 @@
     "tex_live": "2025",
     "errors": 0,
     "warnings": 0,
-    "typesetting_info": 5,
-    "main_file": "main_shorter.tex",
-    "total_pages": 31
-  }
+    "typesetting_info": 3,
+    "main_file": "alt.tex",
+    "total_pages": 30
+  },
+  "original_conversion_tag": "alt-start-2026-10-07"
 }

@@ -1,60 +1,65 @@
 # Manuscript snapshots
 
-Overleaf is the authoritative manuscript editor. This repository records
-manual source snapshots at agreed milestones: the text freeze, the revision
-after new experiments, and submission. There is no automatic Overleaf sync.
+Overleaf is the authoritative manuscript editor. This repository records manual
+source snapshots at agreed milestones. There is no automatic Overleaf sync.
 
 ## ALT starting point: 7 October 2026
 
-[`snapshots/2026-10-07-alt-start/`](snapshots/2026-10-07-alt-start/) contains
-the revised shorter manuscript in the official anonymous ALT 2027 format.
-The conversion preserves its scientific text and mathematics, bibliography,
-and figure contents. It applies the ALT title and theorem conventions, renames
-the AI statement to AI Disclosure, and removes the AISTATS checklist.
+[`snapshots/2026-10-07-alt-start/`](snapshots/2026-10-07-alt-start/) contains the
+revised shorter manuscript in the official anonymous ALT 2027 format.
 
-The main document is `main_shorter.tex`. The bibliography and figures have
-separate names so the older arXiv source can remain in the same Overleaf project.
-The official template's three class/support files are included. The build has
-12 pages through the conclusion and 31 pages including disclosure, references,
-and appendices. Existing experimental results are preserved in this starting
-point; the planned reruns follow the authors' agreement on the text and protocol.
+- Main document: **`alt.tex`**.
+- Bibliography: **`references_alt.bib`**.
+- Graphics: `figures/alt/`.
+- Required ALT template files: `alt2027.cls`, `jmlr.cls`, `jmlrutils.sty`.
+
+The conversion preserves scientific text, mathematics, bibliography contents, and
+figure contents. It applies ALT title/theorem conventions, renames the AI
+statement to AI Disclosure, and removes the AISTATS checklist. A subsequent quick
+layout pass improves float placement, lets the disclosure and references follow
+the conclusion, and allows the validation table to break with repeated headers.
+
+The conclusion is on page 12; disclosure/references begin on that page and end
+on page 14. Appendices start on page 15. The complete PDF has 30 pages.
+Existing results are preserved for the authors' text/protocol agreement and the
+planned reruns.
 
 ```sh
 cd manuscript/snapshots/2026-10-07-alt-start
-latexmk -pdf -interaction=nonstopmode -halt-on-error -outdir=build main_shorter.tex
+latexmk -pdf -interaction=nonstopmode -halt-on-error -outdir=build alt.tex
 ```
 
 `snapshot.json` records the template source, source-file checksums, and build
-checks. This is a starting-point snapshot, preceding the authors' text freeze.
+verification. Tag `alt-start-2026-10-07` preserves the first conversion before the
+requested filenames and page-break improvements. Git history records those
+same-day preparation updates; this starting point precedes the text freeze.
 
 ## ArXiv baseline: 7 October 2026
 
 [`snapshots/2026-10-07-arxiv/`](snapshots/2026-10-07-arxiv/) preserves the
-downloaded `arxiv.tex`, `references.bib`, and all six referenced figures,
-byte for byte. This is the historical arXiv manuscript, preceding the ALT
-revision. `snapshot.json` records SHA-256 checksums for those source files.
+historical arXiv manuscript and its six referenced figures.
 
-The snapshot contains the manuscript's required files. Obsolete ICLR
-templates, duplicate figures at the project root, old drafts, and experiment
-archives are excluded from this manuscript snapshot.
+- Main document: **`arxiv.tex`**.
+- Bibliography: **`references_arxiv.bib`**.
+- Graphics: `figures/`.
 
-To compile with a TeX Live installation containing the packages used by
-the manuscript:
+The bibliography filename and its source command were renamed on request;
+scientific content and figure bytes are unchanged. Tag `arxiv-source-2026-10-07`
+preserves the original byte-for-byte export. The manifest records current hashes.
 
 ```sh
 cd manuscript/snapshots/2026-10-07-arxiv
 latexmk -pdf -interaction=nonstopmode -halt-on-error -outdir=build arxiv.tex
 ```
 
-The main document is `arxiv.tex`. The compiled PDF and auxiliary files go
-into the ignored `build/` directory. The PDF files in `figures/` are required
-source assets for the manuscript.
+Compiled PDFs and auxiliary files go into the ignored `build/` directory. PDF
+files under the figure folders are required source assets. Obsolete ICLR files,
+unused drafts, and experiment archives are excluded from these snapshots.
 
 ## Later snapshots
 
-After the authors agree on a milestone version in Overleaf, export its
-source and preserve the required manuscript files in a new dated snapshot.
-Record the experiment run identifiers and code revision used for new
-results in that snapshot's manifest. Keep large numerical stores and raw
-result archives outside the manuscript snapshot, referenced by manifests
-and checksums.
+After an agreed milestone in Overleaf, export its source and preserve the
+required files in a new dated snapshot. Record the experiment run identifiers
+and code revision used for revised results. Keep bulk numerical stores and raw
+trial archives outside manuscript snapshots, referenced through manifests and
+checksums in the artifact records.

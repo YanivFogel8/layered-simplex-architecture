@@ -4,6 +4,13 @@
 \usepackage[T1]{fontenc}
 \usepackage{mathtools}
 \usepackage{placeins}
+\usepackage{needspace}
+\usepackage{longtable}
+% Allow text and floats to share a page without changing the official type area.
+\renewcommand{\topfraction}{0.9}
+\renewcommand{\bottomfraction}{0.8}
+\renewcommand{\textfraction}{0.1}
+\renewcommand{\floatpagefraction}{0.8}
 \usepackage{booktabs}
 \usepackage{tikz}
 \usepackage{comment}
@@ -72,7 +79,7 @@ Empirical scaling laws describe power-law improvements with data~\citep{kaplan20
 \paragraph{What does a layered architecture buy?}
 An architecture and its random initialization induce a \emph{prior over predictors}~\citep{MerhavFeder1998,feder2025framework}. Bayesian regret depends on the prior mass near the target (Section~\ref{sec:setting}). Multiplication spreads random weights over many orders of magnitude; LSA makes the resulting relation between prior and regret analytically accessible.
 
-\begin{figure}[htp]
+\begin{figure}[!t]
 \centering
 \resizebox{\columnwidth}{!}{\input{figures/alt/construction_tikz.tex}}
 \caption{The layered simplex architecture at $d=24$, $L=4$ (a real draw). Each layer $U^{(\ell)}$ is an independent uniform point of the simplex; their coordinate-wise product, renormalized, is the draw $\theta$ from $\LSA$, whose mass concentrates on a few coordinates. The dotted line marks the largest coordinate of $\theta$.}
@@ -188,7 +195,7 @@ This penalty is paid once for the whole sequence.
 
 After observing $x^N$, the weight on depth $L$ is $w_L(x^N)\propto\pi_LQ_N^{(L)}(x^N)$. Thus, the mixture adapts to the data.
 
-\begin{figure*}[t]
+\begin{figure*}[!htbp]
 \centering
 \includegraphics[width=0.95\textwidth]{figures/alt/complexity_spectrum_L0.pdf}
 \caption{The best depth depends on target concentration at every alphabet size. Online regret (log scale) versus the Zipf exponent $\alpha$ of the target for $d=10^3,10^4,10^6$ ($N=316$, $1000$, $1000$). For each alphabet size, we evaluated every integer depth through $\Lmax$, where $\Lmax/\ln d\approx10$; the plot shows representative depths. Shallow depths are best for targets near uniformity. Deeper models are best as the target becomes more concentrated. Error bars: standard errors over $40$ sampled profiles.}
@@ -263,7 +270,7 @@ Appendix~\ref{app:experiments} examines finite-sample scaling.
 We first compare estimators by their batch regret: the expected KL divergence from the target to the predictive distribution after $n$ observations. Table~\ref{tab:bench} uses $n=1{,}000<d=10{,}000$ and $20$ paired trials on eleven targets extending \citet{orlitsky2015competitive}: uniform; a step with half the symbols at $1/(2d)$ and half at $3/(2d)$; Zipf $\alpha\in\{1,1.5,2,3,4,5\}$; $p_i\propto0.998^i$; and draws from Dirichlet-$1$ and Dirichlet-$1/2$.
 The baselines are add-one, KT, Ristad, the Good--Turing/empirical hybrid (GT), absolute discounting (AD), and a Bayesian symmetric Dirichlet mixture (Dir-$\tau$) with per-coordinate concentration $\tau/d=2^j$, $j=-24,\ldots,4$ ($29$ components; the standard hierarchical-Dirichlet construction, \citealp{mackay1995hierarchical,friedman1998efficient,minka2000estimating}). The natural oracle knows the true target but must assign equal probability to symbols with the same observed count. We compare the fixed depth $22=\operatorname{round}(\cstar\ln d)$ and the equal-prior average over $0$--$80$. We update the weights using the probability each depth assigns to the observed sequence. Additional details and results are given in Appendix~\ref{app:experiments}.
 
-\begin{table*}[t]
+\begin{table*}[!htbp]
 \centering
 \caption{Mean next-symbol KL loss in bits at $n=1{,}000$, $d=10{,}000$ ($20$ paired trials). LSA avg is the depth average~\eqref{eq:avg} over $L=0,\dots,80$ with equal prior weights, the uniform component included; $L=22=\operatorname{round}(\cstar\ln d)$ is a single depth. The natural oracle (last column) knows the target and gives a lower bound for every rule that assigns equal probability to symbols with equal observed counts. Bold marks the lowest loss in each row, excluding the oracle. Entries are sample means. Table~\ref{tab:powers-bench} repeats the benchmark on a second set of samples and summarizes sampling uncertainty. $^{*}$AD has infinite loss when $c_1=0<c_2$ and unseen symbols have positive target probability. When $c_1=c_2=0$, its discount is undefined. Numerical predictors were normalized before scoring.}
 
@@ -289,7 +296,7 @@ Dirichlet-$\frac12$ & 0.9107 & \textbf{0.8887} & 0.8902 & 0.9240 & \textbf{0.888
 \end{tabular}
 \end{table*}
 
-\begin{table*}[t]
+\begin{table*}[!htbp]
 \centering
 \caption{Compressing the King James Bible ($d=10^5$).
 Redundancy in bits per token above the empirical
@@ -323,7 +330,7 @@ $915{,}860$ & 13{,}550 & 8.48
 \end{tabular}
 \end{table*}
 
-\begin{figure*}[t]
+\begin{figure*}[!htbp]
 \centering
 \includegraphics[width=\linewidth]{figures/alt/regret_vs_n_figures.pdf}
 \caption{Competitive comparison on the benchmark of \citet{orlitsky2015competitive} extended to eleven targets ($d=10^4$; log-log axes; $20$ trials, standard-error bars). The mixture LSA predictor (red diamonds) is competitive on practically all targets. On the uniform target its loss is much lower, due to the $L=0$ component. In the uniform panel, downward triangles mark losses at or below $10^{-14}$ bits. }
@@ -354,12 +361,10 @@ Theorem~\ref{thm:optimal} characterizes the leading term of expected cumulative 
 \section{Conclusion}
 LSA combines a simple multiplicative construction, explicit evidence and regret expressions, and competitive prediction across the tested sources. The evidence representation supports numerical evaluation and analysis of how depth shapes the prior. For the Zipf regime studied here, the depth mixture also attains the sharp leading-order discovery cost. Powered layers preserve the evidence representation.
 
-\clearpage
-
 \section*{AI Disclosure}
 Generative AI tools were used to assist implementation of the numerical methods and experiment drivers (Claude, Anthropic), formulation and refinement of claims and proofs (Claude and ChatGPT, OpenAI), experimental design and critique, independent numerical checks, and interpretation of results. They were also used to draft and edit the manuscript, identify literature, format references, and prepare figures. ChatGPT also assisted consistency and layout checks. The authors reviewed the AI-assisted proofs by hand and are responsible for the manuscript's claims, results, and AI-assisted content.
 
-\bibliography{references_shorter}
+\bibliography{references_alt}
 
 \clearpage
 \appendix
@@ -688,7 +693,7 @@ We compare single layers with integer powers $w=0,1,\ldots,80$ against the unit-
 
 \paragraph{Results.} The fixed-power average $0$--$80$ is below the unit-power average on the geometric target ($-0.023\pm0.002$ bits) and on Zipf $\alpha=5$ ($-0.0005\pm0.0002$ bits, $3.5\%$, the lowest non-oracle loss in that row), above it on Zipf $\alpha=1$ ($+0.014\pm0.003$) and Dirichlet-$\frac12$ ($+0.017\pm0.002$), and within $0.001$ bits of it on Zipf $\alpha=2$--$4$. These are paired differences over the $20$ trials, with $\pm$ one standard error. The Ristad mean is lower than either mixture on the geometric target.
 
-\begin{table*}[t]
+\begin{table*}[!htbp]
 \centering
 \caption{The benchmark of Table~\ref{tab:bench} on a second, independent set of samples, with a single-layer power mixture added. Mean next-symbol KL loss in bits at $n=1{,}000$, $d=10{,}000$, over $20$ paired trials. The same samples are used for every column; Table~\ref{tab:bench} uses a separate set of samples. LSA uses unit powers: single depth $L=22$ and the equal-weight average over depths $0$--$80$. The power mixture gives equal prior weight to single layers with $w=0,1,\ldots,80$. Both averages include the uniform model. Bold marks the lowest non-oracle mean among the methods shown, at the printed precision. Standard errors of means are at most $0.0136$ bits. $^{*}$AD is infinite when an unseen symbol gets probability $0$ and undefined when no symbol is seen once or twice.}
 \label{tab:powers-bench}
@@ -715,13 +720,18 @@ Dirichlet-$\frac12$ & 0.9157 & \textbf{0.8916} & 0.8933 & 0.9215 & \textbf{0.891
 
 
 
-\FloatBarrier \section{Validation and reproducibility}
+\FloatBarrier
+\Needspace{8\baselineskip}
+\section{Validation and reproducibility}
 \label{app:validation}
 The numerical experiments use CPU computation. We check the numerical method against closed forms, quadrature, and independent implementations as summarized below.
-\begin{center}\footnotesize\setlength{\tabcolsep}{2pt} \begin{tabular}{@{}p{0.40\linewidth}p{0.28\linewidth}p{\dimexpr0.32\linewidth-8pt\relax}@{}}
+\begingroup
+\renewcommand{\theHtable}{validation}
+\footnotesize\setlength{\tabcolsep}{2pt} \begin{longtable}{@{}p{0.40\linewidth}p{0.28\linewidth}p{\dimexpr0.32\linewidth-8pt\relax}@{}}
 \toprule
 check & compared against & agreement \\
 \midrule
+\endhead
 layer recursion~\eqref{eq:phi-recursion}, $L=2$ & adaptive quadrature & $<2\cdot10^{-6}$ \\
 closed forms at $L=1$ & Proposition~\ref{prop:laplace} & $<2\cdot10^{-9}$ (relative) \\
 $q_{(1)}=1/d$; $d\,q_{(2)}+d(d-1)\,q_{(1,1)}=1$ & exchangeability & $2\cdot10^{-5}$ ($d{=}10^4$); $2\cdot10^{-3}$ ($10^6$) nats \\
@@ -731,8 +741,9 @@ recursion vs.\ Mellin--Barnes, $L=2$, $r\le3$ & 45-digit contour & $2.2\cdot10^{
 $q_\lambda$ from~\eqref{eq:q-integral}, \eqref{eq:mb}, $L\le3$ & Monte Carlo over $\theta$; simplex quadrature & $\le2.6$ standard errors; $1.1\cdot10^{-9}$ \\
 counterexample to the support bound without the entropy term, $d=3$, $N=5$ & enumeration of all sequences & counterexample confirmed \\
 \bottomrule
-\end{tabular}
-\end{center}
+\end{longtable}
+\addtocounter{table}{-1}
+\endgroup
 Appendix~\ref{app:qlambda} gives error propagation for kernel approximation and quadrature.
 
 An independent reference implementation agrees within $5\cdot10^{-13}$ on small alphabets for the $L=1$ closed form, $L=2$ simplex integration, Mellin contour, sequence and predictive normalization, KL chain rule, and discovered-set decomposition.
@@ -752,7 +763,7 @@ The offset $B$ per discovered symbol may be negative and summarizes terms beyond
 
  
 
-\begin{table}[t]
+\begin{table}[!htbp]
 \centering
 \caption{Left: alphabet scaling. For each $N$ the alphabet varies over $10^3\le d\le10^5$; the empirical approximation~\eqref{eq:law} corresponds to slope one with a fitted offset $B$ for each $N$. Right: data scaling. We fit $R_N\propto N^{-s}$ over $10^2\le N\le10^4$ and give the measured exponents alongside the asymptotic power $1-1/\alpha$.}
 \label{tab:alphabet}\label{tab:data}
@@ -796,7 +807,7 @@ We vary alphabet size $d$, sample size $N$, and rescaled depth $c=L/\ln d$ separ
 
 \emph{Depth:} Figure~\ref{fig:depth} shows the cost per discovered symbol against $c$: shallow depths are clearly worse and the curves flatten near $\cstar$ (the best tested $c$ improves on $\cstar$ by $1.2$--$9.5\%$). For this comparison, we use $\rho_0(c)$ from Appendix~\ref{app:fixedd} for $c\le\cstar$ and the constant one for $c>\cstar$, following the sparse-phase interpretation of \citet{jeong2026phase}. This modified curve is a heuristic for regret. It captures the steep rise at small $c$ and the broad minimum, but overestimates regret for $c\lesssim1$.
 
-\begin{figure*}[t]
+\begin{figure*}[!htbp]
 \centering
 \includegraphics[width=0.78\textwidth]{figures/alt/depth_scaling.pdf}
 \caption{Depth scaling. Regret per discovered symbol at $d=10^5$, $N=10^3$, with the modified single-weight heuristic described in the depth test (right: logarithmic-depth range enlarged). The heuristic captures the broad flattening at $\cstar$ and overestimates the shallowest depths.}
@@ -805,7 +816,7 @@ We vary alphabet size $d$, sample size $N$, and rescaled depth $c=L/\ln d$ separ
 
 \paragraph{Benchmark estimators.} Here $c_t$ is the number of symbols appearing $t$ times, and $s$ is the number of observed symbols. \par\noindent\textbf{Add-one.} Laplace's rule. \par\noindent\textbf{Add-half.} The KT rule. \par\noindent\textbf{Good--Turing/empirical hybrid.} A symbol seen $t$ times receives (before normalization) the empirical mass $t/n$ if $t>c_{t+1}$ and the Good--Turing mass $(c_{t+1}+1)(t+1)/(nc_t)$ otherwise, each unseen symbol receiving the $t=0$ value. \par\noindent\textbf{Ristad's law.} The predictor is $\hat q(i)=(m_i+1)(n+1-s)/(n^2+n+2s)$ for $m_i>0$ and $s(s+1)/((d-s)(n^2+n+2s))$ for $m_i=0$ when $s<d$ (add-one if $s=d$). \par\noindent\textbf{Absolute discounting.} The predictor is $\hat q(i)=(m_i-\delta)/n$ for $m_i>0$ with $\delta=c_1/(c_1+2c_2)$. The discounted mass $\delta s/n$ is shared equally by the unseen symbols (if $c_1=0<c_2$, the discount is zero and the KL loss is infinite whenever unseen symbols have positive target probability; if $c_1=c_2=0$, the discount is undefined. These are the starred entries in Table~\ref{tab:bench}). \par\noindent\textbf{Dirichlet concentration mixture.} The exact evidence is $q_\tau(m)=\frac{\Gamma(\tau)}{\Gamma(\tau+n)}\prod_{i:m_i>0}\frac{\Gamma(m_i+\tau/d)}{\Gamma(\tau/d)}$. The component predictor is $(m_i+\tau/d)/(n+\tau)$. We use a uniform prior on the $29$-point grid $\tau/d=2^j$, $j=-24,\dots,4$, and posterior weights $\propto q_\tau(m)$. This mixture receives the same cumulative guarantee as Proposition~\ref{prop:avg}. \par\noindent\textbf{Natural oracle.} The predictor is $\hat q(i)=S_{m_i}/c_{m_i}$. It knows the target and must give equal probability to symbols with equal counts. \par\noindent\textbf{LSA.} The fixed-depth and depth-averaged predictors. \par 
 
-\begin{table}[t]
+\begin{table}[!htbp]
 \centering
 \footnotesize
 \caption{Mean posterior depth weights for the equal-prior mixture over $L=0,\ldots,80$. Broad posteriors are summarized by the shortest contiguous interval containing at least 95\% of the mean posterior mass (ties favor greater enclosed mass); the actual enclosed percentage is shown. Intervals spanning five or more depths are reported this way; otherwise individual weights of at least 0.05 are listed. Individual weights are rounded to two decimals.}

@@ -1,16 +1,17 @@
 {
   "snapshot_date": "2026-10-07",
-  "description": "ArXiv manuscript source downloaded from Overleaf before ALT preparation. Manuscript and bibliography content preserved unchanged; snapshot includes the six referenced figure assets.",
+  "description": "Historical arXiv manuscript source preserved before ALT preparation. Bibliography renamed to references_arxiv.bib and its bibliography command updated on 7 October 2026; scientific content and six figure assets unchanged. The original byte-for-byte export remains at tag arxiv-source-2026-10-07.",
   "main_file": "arxiv.tex",
   "authoritative_editing_location": "Overleaf",
   "files_sha256": {
-    "arxiv.tex": "17b4170a85c96ede5888181071f619ea7b5f6673d30fb0cb3bac6e40c337caa6",
-    "references.bib": "1f0bb4de8fc81310c32ec5b45571a1e9800929cd3ba71afdb09ea5572dc588f7",
+    "arxiv.tex": "e9c4af74ca1c1f3365370fed94fca944326e229f786175d927803a425936fe53",
     "figures/complexity_spectrum.pdf": "c5c0d51201c0d2ed273fefb0b8a1a032067eb1cc95c70bf48920acacc0ddc130",
     "figures/symbol_discovery.pdf": "9758e432bd21e797ec2ee11df50c25073ac342c6e3d80767d26a29e2e1722cd3",
     "figures/data_scaling.pdf": "834687d43019fc059136f1fef8b4015b6ff2530582d618fc82f0ce0ac4ee7c77",
     "figures/depth_scaling.pdf": "83af9ce48aa473ce643f1e6cdd3255a709863e5d2e8fd3ff284022fae28678ce",
     "figures/orlitsky_comparison.pdf": "03271f2d35781c89a69f121931ad8b4e6c5e22b956078249fd7593b65cdb231c",
-    "figures/bible_full.pdf": "d0226b6a1d3d9f3cf864b57b31725d73a393df765f011e04ce1d623efdbdc6ae"
-  }
+    "figures/bible_full.pdf": "d0226b6a1d3d9f3cf864b57b31725d73a393df765f011e04ce1d623efdbdc6ae",
+    "references_arxiv.bib": "1f0bb4de8fc81310c32ec5b45571a1e9800929cd3ba71afdb09ea5572dc588f7"
+  },
+  "original_export_tag": "arxiv-source-2026-10-07"
 }
